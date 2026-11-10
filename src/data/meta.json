@@ -1,0 +1,15 @@
+{
+  "city": "Kyiv",
+  "demoStart": "2026-11-16",
+  "demoDays": 21,
+  "scenario": {
+    "styles": [
+      "portrait"
+    ],
+    "area": "podil",
+    "date": "2026-11-20",
+    "time": "14:00",
+    "duration": 90,
+    "budget": 1500
+  }
+}

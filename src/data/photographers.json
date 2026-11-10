@@ -1,0 +1,1835 @@
+[
+  {
+    "id": "p01",
+    "userType": "generated",
+    "firstName": "Olena",
+    "lastName": "Kovalenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p01-1",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p01-2",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p01-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p01-4",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p01-5",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p01-6",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p01-7",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p01-8",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p01-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p01-10",
+        "src": null,
+        "style": "portrait"
+      }
+    ],
+    "styles": [
+      "portrait",
+      "family"
+    ],
+    "homeArea": "podil",
+    "pricePerHour": 1200,
+    "rating": 4.9,
+    "completedShoots": 132,
+    "about": "I help people feel calm in front of the camera and look like themselves. I shoot in any weather.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching",
+      "Working with kids"
+    ],
+    "gear": [
+      "50mm f/1.8",
+      "70-200mm f/2.8",
+      "Reflector 5-in-1",
+      "Sony A7 IV",
+      "Canon EOS R6"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 480,
+      "maxTravelMin": 50,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p02",
+    "userType": "generated",
+    "firstName": "Andrii",
+    "lastName": "Moroz",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p02-1",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p02-2",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p02-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p02-4",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p02-5",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p02-6",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p02-7",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p02-8",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p02-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p02-10",
+        "src": null,
+        "style": "event"
+      }
+    ],
+    "styles": [
+      "portrait",
+      "event"
+    ],
+    "homeArea": "center",
+    "pricePerHour": 1400,
+    "rating": 4.7,
+    "completedShoots": 88,
+    "about": "I help people feel calm in front of the camera and look like themselves. Photos ready in 5 days.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching",
+      "Fast reportage"
+    ],
+    "gear": [
+      "Fujifilm X-T5",
+      "Sony A7 IV",
+      "Softbox kit",
+      "Reflector 5-in-1",
+      "Canon EOS R6"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 480,
+      "maxTravelMin": 50,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p03",
+    "userType": "generated",
+    "firstName": "Iryna",
+    "lastName": "Zinchenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p03-1",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p03-2",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p03-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p03-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p03-5",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p03-6",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p03-7",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p03-8",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p03-9",
+        "src": null,
+        "style": "love-story"
+      }
+    ],
+    "styles": [
+      "portrait",
+      "love-story"
+    ],
+    "homeArea": "center",
+    "pricePerHour": 1300,
+    "rating": 4.8,
+    "completedShoots": 104,
+    "about": "I help people feel calm in front of the camera and look like themselves. I shoot in any weather.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching",
+      "Couple posing"
+    ],
+    "gear": [
+      "50mm f/1.8",
+      "35mm f/1.4",
+      "Canon EOS R6",
+      "Sony A7 IV"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 480,
+      "maxTravelMin": 50,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p04",
+    "userType": "generated",
+    "firstName": "Taras",
+    "lastName": "Melnyk",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p04-1",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-2",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-5",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-6",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-7",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-8",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p04-10",
+        "src": null,
+        "style": "portrait"
+      }
+    ],
+    "styles": [
+      "portrait"
+    ],
+    "homeArea": "pechersk",
+    "pricePerHour": 1800,
+    "rating": 4.9,
+    "completedShoots": 210,
+    "about": "I help people feel calm in front of the camera and look like themselves. I studied photography in Lviv.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching"
+    ],
+    "gear": [
+      "Sony A7 IV",
+      "Canon EOS R6",
+      "Nikon Z6 II",
+      "24-70mm f/2.8"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 480,
+      "maxTravelMin": 50,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p05",
+    "userType": "generated",
+    "firstName": "Sofiia",
+    "lastName": "Savchuk",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p05-1",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p05-2",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p05-3",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p05-4",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p05-5",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p05-6",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p05-7",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p05-8",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p05-9",
+        "src": null,
+        "style": "family"
+      }
+    ],
+    "styles": [
+      "family",
+      "love-story"
+    ],
+    "homeArea": "podil",
+    "pricePerHour": 1100,
+    "rating": 4.6,
+    "completedShoots": 61,
+    "about": "I photograph families as they are: busy, loud and happy. I shoot in any weather.",
+    "skills": [
+      "Working with kids",
+      "Outdoor sessions",
+      "Candid moments",
+      "Couple posing"
+    ],
+    "gear": [
+      "Godox V1 flash",
+      "85mm f/1.8",
+      "35mm f/1.4",
+      "Canon EOS R6"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 480,
+      "maxTravelMin": 50,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p06",
+    "userType": "generated",
+    "firstName": "Maksym",
+    "lastName": "Pavlenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p06-1",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p06-2",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p06-3",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p06-4",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p06-5",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p06-6",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p06-7",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p06-8",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p06-9",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p06-10",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p06-11",
+        "src": null,
+        "style": "wedding"
+      }
+    ],
+    "styles": [
+      "wedding",
+      "event"
+    ],
+    "homeArea": "obolon",
+    "pricePerHour": 2000,
+    "rating": 4.8,
+    "completedShoots": 150,
+    "about": "I cover the whole day so the couple can forget about the camera. Photos ready in 5 days.",
+    "skills": [
+      "Full-day coverage",
+      "Ceremony timing",
+      "Group photos",
+      "Fast reportage"
+    ],
+    "gear": [
+      "Reflector 5-in-1",
+      "Fujifilm X-T5",
+      "Nikon Z6 II"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 480,
+      "maxTravelMin": 50,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p07",
+    "userType": "generated",
+    "firstName": "Kateryna",
+    "lastName": "Bondar",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p07-1",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p07-2",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p07-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p07-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p07-5",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p07-6",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p07-7",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p07-8",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p07-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p07-10",
+        "src": null,
+        "style": "family"
+      }
+    ],
+    "styles": [
+      "portrait",
+      "family"
+    ],
+    "homeArea": "livyi-bereh",
+    "pricePerHour": 2400,
+    "rating": 4.8,
+    "completedShoots": 139,
+    "about": "I help people feel calm in front of the camera and look like themselves. I shoot in any weather.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching",
+      "Working with kids"
+    ],
+    "gear": [
+      "Reflector 5-in-1",
+      "Godox V1 flash",
+      "50mm f/1.8",
+      "35mm f/1.4"
+    ],
+    "rules": {
+      "breakMin": 0,
+      "minShoot": 60,
+      "maxShoot": 120,
+      "maxPerDay": 480,
+      "maxTravelMin": 30,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p08",
+    "userType": "generated",
+    "firstName": "Dmytro",
+    "lastName": "Oliinyk",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p08-1",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p08-2",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p08-3",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p08-4",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p08-5",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p08-6",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p08-7",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p08-8",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p08-9",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p08-10",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p08-11",
+        "src": null,
+        "style": "product"
+      }
+    ],
+    "styles": [
+      "product",
+      "event"
+    ],
+    "homeArea": "pechersk",
+    "pricePerHour": 1200,
+    "rating": 4.7,
+    "completedShoots": 47,
+    "about": "I make clean product photos for shops, menus and social media. Photos ready in 5 days.",
+    "skills": [
+      "Studio lighting",
+      "Flat lay",
+      "Clean backgrounds",
+      "Fast reportage"
+    ],
+    "gear": [
+      "35mm f/1.4",
+      "Sony A7 IV",
+      "24-70mm f/2.8",
+      "Fujifilm X-T5"
+    ],
+    "rules": {
+      "breakMin": 45,
+      "minShoot": 15,
+      "maxShoot": 180,
+      "maxPerDay": 480,
+      "maxTravelMin": 60,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p09",
+    "userType": "generated",
+    "firstName": "Yuliia",
+    "lastName": "Kostenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p09-1",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-2",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-5",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-6",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-7",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-8",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p09-10",
+        "src": null,
+        "style": "portrait"
+      }
+    ],
+    "styles": [
+      "portrait"
+    ],
+    "homeArea": "pechersk",
+    "pricePerHour": 1800,
+    "rating": 4.7,
+    "completedShoots": 237,
+    "about": "I help people feel calm in front of the camera and look like themselves. I shoot in any weather.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching"
+    ],
+    "gear": [
+      "70-200mm f/2.8",
+      "Softbox kit",
+      "Sony A7 IV",
+      "24-70mm f/2.8"
+    ],
+    "rules": {
+      "breakMin": 30,
+      "minShoot": 45,
+      "maxShoot": 180,
+      "maxPerDay": 360,
+      "maxTravelMin": 60,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p10",
+    "userType": "generated",
+    "firstName": "Bohdan",
+    "lastName": "Shevchuk",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p10-1",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-2",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-5",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-6",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-7",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-8",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-10",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p10-11",
+        "src": null,
+        "style": "portrait"
+      }
+    ],
+    "styles": [
+      "portrait"
+    ],
+    "homeArea": "pechersk",
+    "pricePerHour": 2300,
+    "rating": 4.3,
+    "completedShoots": 237,
+    "about": "I help people feel calm in front of the camera and look like themselves. Based in Kyiv for 6 years.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching"
+    ],
+    "gear": [
+      "Fujifilm X-T5",
+      "Canon EOS R6",
+      "35mm f/1.4",
+      "Nikon Z6 II",
+      "85mm f/1.8"
+    ],
+    "rules": {
+      "breakMin": 45,
+      "minShoot": 30,
+      "maxShoot": 120,
+      "maxPerDay": 600,
+      "maxTravelMin": 40,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p11",
+    "userType": "generated",
+    "firstName": "Nataliia",
+    "lastName": "Polishchuk",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p11-1",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-2",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-3",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-4",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-5",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-6",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-7",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-8",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-9",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p11-10",
+        "src": null,
+        "style": "love-story"
+      }
+    ],
+    "styles": [
+      "love-story"
+    ],
+    "homeArea": "podil",
+    "pricePerHour": 2100,
+    "rating": 4.7,
+    "completedShoots": 130,
+    "about": "I tell the story of a couple with light, places and small gestures. Photos ready in 5 days.",
+    "skills": [
+      "Couple posing",
+      "Golden hour",
+      "Storytelling"
+    ],
+    "gear": [
+      "35mm f/1.4",
+      "Fujifilm X-T5",
+      "Nikon Z6 II",
+      "85mm f/1.8"
+    ],
+    "rules": {
+      "breakMin": 0,
+      "minShoot": 60,
+      "maxShoot": 240,
+      "maxPerDay": 420,
+      "maxTravelMin": 60,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p12",
+    "userType": "generated",
+    "firstName": "Oleksandr",
+    "lastName": "Levchenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p12-1",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-2",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-5",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-6",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-7",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-8",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p12-10",
+        "src": null,
+        "style": "portrait"
+      }
+    ],
+    "styles": [
+      "portrait"
+    ],
+    "homeArea": "livyi-bereh",
+    "pricePerHour": 1700,
+    "rating": 4.7,
+    "completedShoots": 112,
+    "about": "I help people feel calm in front of the camera and look like themselves. Based in Kyiv for 6 years.",
+    "skills": [
+      "Natural light",
+      "Posing guidance",
+      "Retouching"
+    ],
+    "gear": [
+      "85mm f/1.8",
+      "Fujifilm X-T5",
+      "Nikon Z6 II",
+      "Godox V1 flash",
+      "50mm f/1.8"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 360,
+      "maxTravelMin": 30,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p13",
+    "userType": "generated",
+    "firstName": "Mariia",
+    "lastName": "Lysenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p13-1",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p13-2",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p13-3",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p13-4",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p13-5",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p13-6",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p13-7",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p13-8",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p13-9",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p13-10",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p13-11",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p13-12",
+        "src": null,
+        "style": "love-story"
+      }
+    ],
+    "styles": [
+      "love-story",
+      "family"
+    ],
+    "homeArea": "podil",
+    "pricePerHour": 1700,
+    "rating": 4.4,
+    "completedShoots": 136,
+    "about": "I tell the story of a couple with light, places and small gestures. Based in Kyiv for 6 years.",
+    "skills": [
+      "Couple posing",
+      "Golden hour",
+      "Storytelling",
+      "Working with kids"
+    ],
+    "gear": [
+      "35mm f/1.4",
+      "24-70mm f/2.8",
+      "50mm f/1.8"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 45,
+      "maxShoot": 180,
+      "maxPerDay": 480,
+      "maxTravelMin": 60,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p14",
+    "userType": "generated",
+    "firstName": "Roman",
+    "lastName": "Rudenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p14-1",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p14-2",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p14-3",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p14-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p14-5",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p14-6",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p14-7",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p14-8",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p14-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p14-10",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p14-11",
+        "src": null,
+        "style": "portrait"
+      }
+    ],
+    "styles": [
+      "love-story",
+      "portrait"
+    ],
+    "homeArea": "obolon",
+    "pricePerHour": 2400,
+    "rating": 4.8,
+    "completedShoots": 103,
+    "about": "I tell the story of a couple with light, places and small gestures. Photos ready in 5 days.",
+    "skills": [
+      "Couple posing",
+      "Golden hour",
+      "Storytelling",
+      "Natural light"
+    ],
+    "gear": [
+      "24-70mm f/2.8",
+      "50mm f/1.8",
+      "Reflector 5-in-1"
+    ],
+    "rules": {
+      "breakMin": 0,
+      "minShoot": 45,
+      "maxShoot": 240,
+      "maxPerDay": 420,
+      "maxTravelMin": 40,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p15",
+    "userType": "generated",
+    "firstName": "Viktoriia",
+    "lastName": "Tymoshenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p15-1",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p15-2",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p15-3",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p15-4",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p15-5",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p15-6",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p15-7",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p15-8",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p15-9",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p15-10",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p15-11",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p15-12",
+        "src": null,
+        "style": "wedding"
+      }
+    ],
+    "styles": [
+      "wedding",
+      "love-story"
+    ],
+    "homeArea": "darnytsia",
+    "pricePerHour": 2300,
+    "rating": 4.5,
+    "completedShoots": 130,
+    "about": "I cover the whole day so the couple can forget about the camera. I shoot in any weather.",
+    "skills": [
+      "Full-day coverage",
+      "Ceremony timing",
+      "Group photos",
+      "Couple posing"
+    ],
+    "gear": [
+      "Fujifilm X-T5",
+      "Nikon Z6 II",
+      "Reflector 5-in-1",
+      "35mm f/1.4"
+    ],
+    "rules": {
+      "breakMin": 15,
+      "minShoot": 60,
+      "maxShoot": 480,
+      "maxPerDay": 420,
+      "maxTravelMin": 30,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p16",
+    "userType": "generated",
+    "firstName": "Serhii",
+    "lastName": "Tkachenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p16-1",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p16-2",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p16-3",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p16-4",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p16-5",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p16-6",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p16-7",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p16-8",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p16-9",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p16-10",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p16-11",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p16-12",
+        "src": null,
+        "style": "product"
+      }
+    ],
+    "styles": [
+      "product",
+      "wedding"
+    ],
+    "homeArea": "darnytsia",
+    "pricePerHour": 1600,
+    "rating": 4.5,
+    "completedShoots": 87,
+    "about": "I make clean product photos for shops, menus and social media. I studied photography in Lviv.",
+    "skills": [
+      "Studio lighting",
+      "Flat lay",
+      "Clean backgrounds",
+      "Full-day coverage"
+    ],
+    "gear": [
+      "Softbox kit",
+      "24-70mm f/2.8",
+      "50mm f/1.8",
+      "35mm f/1.4"
+    ],
+    "rules": {
+      "breakMin": 30,
+      "minShoot": 30,
+      "maxShoot": 480,
+      "maxPerDay": 300,
+      "maxTravelMin": 45,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p17",
+    "userType": "generated",
+    "firstName": "Anastasiia",
+    "lastName": "Marchenko",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p17-1",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p17-2",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p17-3",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p17-4",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p17-5",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p17-6",
+        "src": null,
+        "style": "love-story"
+      },
+      {
+        "id": "p17-7",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p17-8",
+        "src": null,
+        "style": "event"
+      },
+      {
+        "id": "p17-9",
+        "src": null,
+        "style": "love-story"
+      }
+    ],
+    "styles": [
+      "love-story",
+      "event"
+    ],
+    "homeArea": "obolon",
+    "pricePerHour": 2300,
+    "rating": 4.6,
+    "completedShoots": 239,
+    "about": "I tell the story of a couple with light, places and small gestures. I studied photography in Lviv.",
+    "skills": [
+      "Couple posing",
+      "Golden hour",
+      "Storytelling",
+      "Fast reportage"
+    ],
+    "gear": [
+      "Reflector 5-in-1",
+      "24-70mm f/2.8",
+      "85mm f/1.8",
+      "Fujifilm X-T5"
+    ],
+    "rules": {
+      "breakMin": 30,
+      "minShoot": 60,
+      "maxShoot": 480,
+      "maxPerDay": 600,
+      "maxTravelMin": 30,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p18",
+    "userType": "generated",
+    "firstName": "Yurii",
+    "lastName": "Danyliuk",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p18-1",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p18-2",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p18-3",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p18-4",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p18-5",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p18-6",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p18-7",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p18-8",
+        "src": null,
+        "style": "wedding"
+      },
+      {
+        "id": "p18-9",
+        "src": null,
+        "style": "portrait"
+      },
+      {
+        "id": "p18-10",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p18-11",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p18-12",
+        "src": null,
+        "style": "wedding"
+      }
+    ],
+    "styles": [
+      "family",
+      "portrait",
+      "wedding"
+    ],
+    "homeArea": "darnytsia",
+    "pricePerHour": 2000,
+    "rating": 4.7,
+    "completedShoots": 143,
+    "about": "I photograph families as they are: busy, loud and happy. Photos ready in 5 days.",
+    "skills": [
+      "Working with kids",
+      "Outdoor sessions",
+      "Candid moments",
+      "Natural light"
+    ],
+    "gear": [
+      "35mm f/1.4",
+      "Fujifilm X-T5",
+      "85mm f/1.8",
+      "24-70mm f/2.8"
+    ],
+    "rules": {
+      "breakMin": 0,
+      "minShoot": 30,
+      "maxShoot": 240,
+      "maxPerDay": 300,
+      "maxTravelMin": 60,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p19",
+    "userType": "generated",
+    "firstName": "Daryna",
+    "lastName": "Kravets",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p19-1",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-2",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-3",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-4",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-5",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-6",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-7",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-8",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-9",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-10",
+        "src": null,
+        "style": "product"
+      },
+      {
+        "id": "p19-11",
+        "src": null,
+        "style": "product"
+      }
+    ],
+    "styles": [
+      "product"
+    ],
+    "homeArea": "podil",
+    "pricePerHour": 1800,
+    "rating": 5,
+    "completedShoots": 211,
+    "about": "I make clean product photos for shops, menus and social media. I shoot in any weather.",
+    "skills": [
+      "Studio lighting",
+      "Flat lay",
+      "Clean backgrounds"
+    ],
+    "gear": [
+      "50mm f/1.8",
+      "70-200mm f/2.8",
+      "Sony A7 IV"
+    ],
+    "rules": {
+      "breakMin": 45,
+      "minShoot": 15,
+      "maxShoot": 300,
+      "maxPerDay": 600,
+      "maxTravelMin": 40,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  },
+  {
+    "id": "p20",
+    "userType": "generated",
+    "firstName": "Ostap",
+    "lastName": "Hnatiuk",
+    "photo": null,
+    "portfolio": [
+      {
+        "id": "p20-1",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-2",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-3",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-4",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-5",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-6",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-7",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-8",
+        "src": null,
+        "style": "family"
+      },
+      {
+        "id": "p20-9",
+        "src": null,
+        "style": "family"
+      }
+    ],
+    "styles": [
+      "family"
+    ],
+    "homeArea": "obolon",
+    "pricePerHour": 2400,
+    "rating": 4.3,
+    "completedShoots": 39,
+    "about": "I photograph families as they are: busy, loud and happy. I shoot in any weather.",
+    "skills": [
+      "Working with kids",
+      "Outdoor sessions",
+      "Candid moments"
+    ],
+    "gear": [
+      "70-200mm f/2.8",
+      "85mm f/1.8",
+      "Godox V1 flash",
+      "Nikon Z6 II",
+      "50mm f/1.8"
+    ],
+    "rules": {
+      "breakMin": 45,
+      "minShoot": 15,
+      "maxShoot": 300,
+      "maxPerDay": 420,
+      "maxTravelMin": 45,
+      "transport": "car"
+    },
+    "profileDone": true,
+    "rulesDone": true
+  }
+]

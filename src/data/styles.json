@@ -1,0 +1,68 @@
+[
+  {
+    "id": "portrait",
+    "name": "Portrait",
+    "group": "People",
+    "close": [
+      "family",
+      "love-story"
+    ],
+    "related": [
+      "event"
+    ]
+  },
+  {
+    "id": "family",
+    "name": "Family",
+    "group": "People",
+    "close": [
+      "portrait",
+      "love-story"
+    ],
+    "related": [
+      "event"
+    ]
+  },
+  {
+    "id": "love-story",
+    "name": "Love story",
+    "group": "People",
+    "close": [
+      "portrait",
+      "family"
+    ],
+    "related": [
+      "wedding"
+    ]
+  },
+  {
+    "id": "wedding",
+    "name": "Wedding",
+    "group": "Events",
+    "close": [
+      "event"
+    ],
+    "related": [
+      "love-story",
+      "family"
+    ]
+  },
+  {
+    "id": "event",
+    "name": "Event",
+    "group": "Events",
+    "close": [
+      "wedding"
+    ],
+    "related": [
+      "portrait"
+    ]
+  },
+  {
+    "id": "product",
+    "name": "Product",
+    "group": "Commercial",
+    "close": [],
+    "related": []
+  }
+]

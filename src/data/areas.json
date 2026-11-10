@@ -1,0 +1,38 @@
+[
+  {
+    "id": "podil",
+    "name": "Podil"
+  },
+  {
+    "id": "center",
+    "name": "City Center"
+  },
+  {
+    "id": "pechersk",
+    "name": "Pechersk"
+  },
+  {
+    "id": "obolon",
+    "name": "Obolon"
+  },
+  {
+    "id": "holosiiv",
+    "name": "Holosiiv"
+  },
+  {
+    "id": "solomianka",
+    "name": "Solomianka"
+  },
+  {
+    "id": "livyi-bereh",
+    "name": "Livyi Bereh"
+  },
+  {
+    "id": "darnytsia",
+    "name": "Darnytsia"
+  },
+  {
+    "id": "troieshchyna",
+    "name": "Troieshchyna"
+  }
+]

@@ -1,0 +1,101 @@
+{
+  "podil": {
+    "podil": 10,
+    "center": 15,
+    "pechersk": 20,
+    "obolon": 25,
+    "holosiiv": 30,
+    "solomianka": 25,
+    "livyi-bereh": 40,
+    "darnytsia": 45,
+    "troieshchyna": 45
+  },
+  "center": {
+    "podil": 15,
+    "center": 10,
+    "pechersk": 15,
+    "obolon": 30,
+    "holosiiv": 25,
+    "solomianka": 20,
+    "livyi-bereh": 40,
+    "darnytsia": 45,
+    "troieshchyna": 50
+  },
+  "pechersk": {
+    "podil": 20,
+    "center": 15,
+    "pechersk": 10,
+    "obolon": 30,
+    "holosiiv": 25,
+    "solomianka": 25,
+    "livyi-bereh": 35,
+    "darnytsia": 35,
+    "troieshchyna": 50
+  },
+  "obolon": {
+    "podil": 25,
+    "center": 30,
+    "pechersk": 30,
+    "obolon": 10,
+    "holosiiv": 45,
+    "solomianka": 35,
+    "livyi-bereh": 45,
+    "darnytsia": 55,
+    "troieshchyna": 45
+  },
+  "holosiiv": {
+    "podil": 30,
+    "center": 25,
+    "pechersk": 25,
+    "obolon": 45,
+    "holosiiv": 10,
+    "solomianka": 25,
+    "livyi-bereh": 50,
+    "darnytsia": 45,
+    "troieshchyna": 65
+  },
+  "solomianka": {
+    "podil": 25,
+    "center": 20,
+    "pechersk": 25,
+    "obolon": 35,
+    "holosiiv": 25,
+    "solomianka": 10,
+    "livyi-bereh": 50,
+    "darnytsia": 50,
+    "troieshchyna": 60
+  },
+  "livyi-bereh": {
+    "podil": 40,
+    "center": 40,
+    "pechersk": 35,
+    "obolon": 45,
+    "holosiiv": 50,
+    "solomianka": 50,
+    "livyi-bereh": 10,
+    "darnytsia": 25,
+    "troieshchyna": 30
+  },
+  "darnytsia": {
+    "podil": 45,
+    "center": 45,
+    "pechersk": 35,
+    "obolon": 55,
+    "holosiiv": 45,
+    "solomianka": 50,
+    "livyi-bereh": 25,
+    "darnytsia": 10,
+    "troieshchyna": 40
+  },
+  "troieshchyna": {
+    "podil": 45,
+    "center": 50,
+    "pechersk": 50,
+    "obolon": 45,
+    "holosiiv": 65,
+    "solomianka": 60,
+    "livyi-bereh": 30,
+    "darnytsia": 40,
+    "troieshchyna": 10
+  }
+}
