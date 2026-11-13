@@ -1,81 +1,70 @@
 import { styleName } from '../lib/store.js'
+import { avatarSrc } from '../lib/photos.js'
 
-const PALETTE = [
-  ['#f4a261', '#e76f51'], ['#2a9d8f', '#264653'], ['#e9c46a', '#f4a261'], ['#8ecae6', '#219ebc'],
-  ['#cdb4db', '#a2d2ff'], ['#b5e48c', '#52b69a'], ['#ffafcc', '#cdb4db'], ['#90be6d', '#43aa8b'],
-]
-
-function hashOf(text) {
-  let h = 0
-  for (const c of String(text)) h = (h * 31 + c.charCodeAt(0)) >>> 0
-  return h
+// Line icons from the Figma design.
+const PATHS = {
+  arrow: <><path d="M19 12H5" /><path d="m12 19-7-7 7-7" /></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></>,
+  camera: <><path d="M14.5 4 16 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l1.5-3h5Z" /><circle cx="12" cy="13" r="3.5" /></>,
+  check: <path d="m5 12 4 4L19 6" />,
+  chevron: <path d="m9 18 6-6-6-6" />,
+  down: <path d="m6 9 6 6 6-6" />,
+  clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+  close: <path d="m6 6 12 12M18 6 6 18" />,
+  distance: <><path d="M5 19 19 5" /><circle cx="5" cy="19" r="2" /><circle cx="19" cy="5" r="2" /></>,
+  edit: <><path d="m14 5 5 5L8 21H3v-5L14 5Z" /><path d="m12 7 5 5" /></>,
+  image: <><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="m21 15-5-5L5 20" /></>,
+  location: <><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></>,
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  plus: <path d="M12 5v14M5 12h14" />,
+  shield: <><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z" /><path d="m9 12 2 2 4-4" /></>,
+  star: <path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.5 1.1 6.3-5.6-3-5.6 3 1.1-6.3-4.6-4.5 6.3-.9L12 2.8Z" />,
+  user: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>,
 }
 
-// Placeholder art until the team adds licensed or AI-generated photos (spec section 7).
-export function Art({ seed, label, src, className = '' }) {
-  if (src) return <img className={`art ${className}`} src={src} alt={label || ''} loading="lazy" />
-  const h = hashOf(seed)
-  const [a, b] = PALETTE[h % PALETTE.length]
-  const cx = 20 + (h % 60)
-  const cy = 25 + ((h >> 3) % 50)
+export function Icon({ name, size = 20 }) {
   return (
-    <svg className={`art ${className}`} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label={label || 'Photo'}>
-      <defs>
-        <linearGradient id={`g${h}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={a} />
-          <stop offset="1" stopColor={b} />
-        </linearGradient>
-      </defs>
-      <rect width="100" height="100" fill={`url(#g${h})`} />
-      <circle cx={cx} cy={cy} r={12 + (h % 10)} fill="#fff" opacity="0.35" />
-      <path d={`M0 ${70 + (h % 15)} Q 30 ${55 + (h % 20)} 60 ${72} T 100 ${65 + ((h >> 2) % 20)} V100 H0 Z`} fill="#000" opacity="0.15" />
-      {label && (
-        <text x="6" y="94" fontSize="8" fill="#fff" opacity="0.9" fontFamily="system-ui">{label}</text>
-      )}
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {PATHS[name]}
     </svg>
   )
 }
 
-export function Avatar({ person, size = 56 }) {
-  const initials = `${person.firstName?.[0] ?? ''}${person.lastName?.[0] ?? ''}`
-  if (person.photo) return <img className="avatar" src={person.photo} alt="" style={{ width: size, height: size }} />
-  const [a, b] = PALETTE[hashOf(person.id) % PALETTE.length]
-  return (
-    <div className="avatar" style={{ width: size, height: size, background: `linear-gradient(135deg, ${a}, ${b})`, fontSize: size * 0.36 }} aria-hidden>
-      {initials}
-    </div>
-  )
+export function Photo({ photographer, width, className = '', alt }) {
+  return <img className={className} src={avatarSrc(photographer, width)} alt={alt ?? `${photographer.firstName} ${photographer.lastName}`} loading="lazy" />
 }
 
-export function Stars({ value, count }) {
-  if (!value) return <span className="muted">New</span>
+export function Rating({ value, shoots }) {
+  if (!value) return <span className="rating"><span className="new-badge">New</span></span>
   return (
-    <span className="stars" title={`${value} out of 5`}>
-      <span aria-hidden>★</span> {value.toFixed(1)}
-      {count != null && <span className="muted"> · {count} shoots</span>}
+    <span className="rating">
+      <span className="star"><Icon name="star" size={15} /></span>
+      <strong>{value.toFixed(1)}</strong>
+      {shoots != null && <span>· {shoots} shoots</span>}
     </span>
   )
 }
 
 export function StyleTags({ styles, highlight = [] }) {
   return (
-    <span className="tags">
+    <div className="tag-row">
       {styles.map((s) => (
-        <span key={s} className={`tag ${highlight.includes(s) ? 'tag-on' : ''}`}>{styleName(s)}</span>
+        <span key={s} className={`tag ${highlight.includes(s) ? 'selected' : ''}`}>{styleName(s)}</span>
       ))}
-    </span>
+    </div>
   )
 }
 
 export function Loading({ text = 'Loading…' }) {
-  return <div className="state state-loading" role="status"><span className="spinner" /> {text}</div>
+  return <div className="state" role="status"><span className="spinner" /> {text}</div>
 }
 
 export function ErrorState({ text, onRetry }) {
   return (
     <div className="state state-error" role="alert">
       <p>{text}</p>
-      {onRetry && <button className="btn" onClick={onRetry}>Try again</button>}
+      {onRetry && <button className="btn btn-secondary" onClick={onRetry}>Try again</button>}
     </div>
   )
 }
@@ -84,27 +73,31 @@ export function Empty({ children }) {
   return <div className="state state-empty">{children}</div>
 }
 
-export function Field({ label, error, children, hint }) {
+// Label + control, like the design's Field, plus the error text under it.
+export function Field({ label, note, icon, error, hint, children, className = '' }) {
   return (
-    <label className={`field ${error ? 'has-error' : ''}`}>
-      <span className="field-label">{label}</span>
-      {children}
-      {hint && !error && <span className="field-hint">{hint}</span>}
-      {error && <span className="field-error">{error}</span>}
+    <label className={`field ${error ? 'has-error' : ''} ${className}`}>
+      <span>{label}{note && <small>{note}</small>}</span>
+      {icon ? <div className="field-control"><Icon name={icon} size={18} />{children}</div> : children}
+      {hint && !error && <em className="field-hint">{hint}</em>}
+      {error && <em className="field-error">{error}</em>}
     </label>
   )
 }
 
-export function Modal({ title, children, onClose }) {
+export function Modal({ title, icon, children, onClose }) {
   return (
-    <div className="modal-back" onClick={onClose}>
+    <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
-        <div className="modal-head">
-          <h2>{title}</h2>
-          <button className="icon-btn" onClick={onClose} aria-label="Close">×</button>
-        </div>
+        <button className="modal-close" onClick={onClose} aria-label="Close"><Icon name="close" /></button>
+        {icon && <span className="modal-icon"><Icon name={icon} size={28} /></span>}
+        <h2>{title}</h2>
         {children}
       </div>
     </div>
   )
+}
+
+export function Toast({ children }) {
+  return <div className="toast" role="status"><Icon name="check" /> {children}</div>
 }

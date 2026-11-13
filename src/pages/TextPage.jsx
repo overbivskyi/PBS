@@ -22,12 +22,14 @@ const TEXTS = {
 export default function TextPage({ kind }) {
   const t = TEXTS[kind]
   return (
-    <div className="container page narrow">
-      <article className="card prose">
-        <h1>{t.title}</h1>
-        <p className="muted small">Draft</p>
-        {t.body.map((p) => <p key={p}>{p}</p>)}
-      </article>
-    </div>
+    <main className="page-alt">
+      <div className="container narrow-page">
+        <article className="form-card prose">
+          <span className="kicker">Draft</span>
+          <h1>{t.title}</h1>
+          {t.body.map((p) => <p key={p}>{p}</p>)}
+        </article>
+      </div>
+    </main>
   )
 }

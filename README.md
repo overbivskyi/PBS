@@ -10,6 +10,12 @@ npm install
 npm run dev
 ```
 
+## Design
+
+The look follows the team's Figma Make file "Design an App" (Snaply): its stylesheet is in `src/index.css`,
+with an added section at the end for states the design does not show (errors, loading, empty lists, blocked times).
+Demo photos are the design's Unsplash photos (`src/lib/photos.js`); photos uploaded in Profile settings replace them.
+
 ## Where the data lives
 
 | What | Where |

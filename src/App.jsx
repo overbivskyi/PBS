@@ -26,12 +26,13 @@ export default function App() {
           <Route path="photographer/:id" element={<Profile />} />
           <Route path="book" element={<Booking />} />
           <Route path="confirmation/:id" element={<Confirmation />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="login" element={<LogIn />} />
           <Route path="terms" element={<TextPage kind="terms" />} />
           <Route path="privacy" element={<TextPage kind="privacy" />} />
-          <Route path="*" element={<div className="container page"><Empty>Page not found.</Empty></div>} />
+          <Route path="*" element={<main className="page-alt"><div className="container narrow-page"><Empty>Page not found.</Empty></div></main>} />
         </Route>
+        {/* sign-up and login have no header or footer, as in the design */}
+        <Route path="signup" element={<SignUp />} />
+        <Route path="login" element={<LogIn />} />
       </Routes>
     </HashRouter>
   )

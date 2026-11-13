@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { Loading, ErrorState } from '../components/ui.jsx'
+import { Icon, Loading, ErrorState, Photo, Rating } from '../components/ui.jsx'
 import { useAsync } from '../lib/hooks.js'
 import { getBooking, getPhotographer } from '../lib/store.js'
 import { formatDate, toHHMM, uah } from '../lib/time.js'
@@ -11,8 +11,8 @@ export default function Confirmation() {
     return { b, p: await getPhotographer(b.photographerId) }
   }, [id])
 
-  if (data.status === 'loading') return <div className="container page"><Loading /></div>
-  if (data.status === 'error') return <div className="container page"><ErrorState text="We could not find this booking." /></div>
+  if (data.status === 'loading') return <main className="page-alt confirmation"><Loading /></main>
+  if (data.status === 'error') return <main className="page-alt confirmation"><ErrorState text="We could not find this booking." /></main>
   const { b, p } = data.data
 
   // Google Calendar link with the shoot prefilled (P1, no API needed)
@@ -20,25 +20,50 @@ export default function Confirmation() {
   const gcal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`Photo shoot with ${p.firstName} ${p.lastName}`)}&dates=${stamp(b.start)}/${stamp(b.start + b.duration)}&ctz=Europe/Kyiv&location=${encodeURIComponent(b.address)}`
 
   return (
-    <div className="container page narrow">
-      <div className="card center confirm">
-        <div className="confirm-icon" aria-hidden>✓</div>
+    <main className="page-alt confirmation">
+      <div className="confirmation-card">
+        <span className="success-icon"><Icon name="check" size={32} /></span>
+        <span className="kicker">Booking #{b.id.toUpperCase()}</span>
         <h1>Your shoot is booked</h1>
-        <dl className="details">
-          <dt>Booking number</dt><dd>{b.id.toUpperCase()}</dd>
-          <dt>Photographer</dt><dd>{p.firstName} {p.lastName}</dd>
-          <dt>Date</dt><dd>{formatDate(b.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</dd>
-          <dt>Time</dt><dd>{toHHMM(b.start)}–{toHHMM(b.start + b.duration)} ({b.duration} min)</dd>
-          <dt>Address</dt><dd>{b.address}</dd>
-          <dt>Deposit paid</dt><dd>{uah(b.deposit)}</dd>
-          <dt>Left to pay after the shoot</dt><dd>{uah(b.total - b.deposit)}</dd>
-        </dl>
-        <p className="calendar-line">✓ Added to the photographer's calendar</p>
-        <div className="actions center">
-          <a className="btn" href={gcal} target="_blank" rel="noreferrer">Add to my calendar</a>
-          <Link className="btn" to="/">Back to home</Link>
+        <p>The deposit is paid. {p.firstName} has the shoot in the calendar.</p>
+        <div className="confirmed-person">
+          <Photo photographer={p} width={160} />
+          <div>
+            <span>Photographer</span>
+            <h3>{p.firstName} {p.lastName}</h3>
+            <Rating value={p.rating} />
+          </div>
+        </div>
+        <div className="confirmation-grid">
+          <div>
+            <Icon name="calendar" />
+            <span>Date & time<strong>{formatDate(b.date, { weekday: 'long', day: 'numeric', month: 'long' })} · {toHHMM(b.start)}–{toHHMM(b.start + b.duration)}</strong></span>
+          </div>
+          <div>
+            <Icon name="location" />
+            <span>Address<strong>{b.address}</strong></span>
+          </div>
+          <div>
+            <Icon name="check" />
+            <span>Deposit paid<strong>{uah(b.deposit)}</strong></span>
+          </div>
+          <div>
+            <Icon name="clock" />
+            <span>Left to pay<strong>{uah(b.total - b.deposit)} after the shoot</strong></span>
+          </div>
+        </div>
+        <div className="calendar-note">
+          <Icon name="calendar" />
+          <div>
+            <strong>Added to the photographer's calendar</strong>
+            <span>Your time is reserved.</span>
+          </div>
+        </div>
+        <div className="confirmation-actions">
+          <a className="btn btn-primary" href={gcal} target="_blank" rel="noreferrer">Add to my calendar</a>
+          <Link className="btn btn-secondary" to="/">Back to home</Link>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

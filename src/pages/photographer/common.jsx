@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
 import { useSession } from '../../lib/hooks.js'
 import { catalog } from '../../lib/store.js'
+import { Icon, Loading, ErrorState } from '../../components/ui.jsx'
 import { addDays } from '../../lib/time.js'
 
 // The demo runs on fixed dates. "Today" is the real date while it is inside the demo weeks,
@@ -16,28 +17,53 @@ export function PhotographerGate({ children }) {
   const { photographerId } = useSession()
   if (!photographerId) {
     return (
-      <div className="container page narrow">
-        <div className="card center">
+      <main className="page-alt confirmation">
+        <div className="confirmation-card gate">
+          <span className="success-icon gate-icon"><Icon name="camera" size={30} /></span>
           <h1>For photographers</h1>
-          <p className="muted">Log in as a photographer to see your bookings and rules.</p>
-          <div className="actions center">
+          <p>Log in as a photographer to see your bookings and rules.</p>
+          <div className="confirmation-actions">
             <Link className="btn btn-primary" to="/signup?role=photographer">Sign up</Link>
-            <Link className="btn" to="/login">Log in</Link>
+            <Link className="btn btn-secondary" to="/login">Log in</Link>
           </div>
         </div>
-      </div>
+      </main>
     )
   }
   return children(photographerId)
 }
 
-export function PhotographerTabs() {
+// Page frame of the photographer workspace: heading, side element and the tabs.
+export function ProPage({ title, subtitle, aside, children }) {
   return (
-    <nav className="tabs">
-      <NavLink to="/photographer/bookings">Bookings</NavLink>
-      <NavLink to="/photographer/rules">Rules</NavLink>
-      <NavLink to="/photographer/profile">Profile settings</NavLink>
-    </nav>
+    <main className="page-alt">
+      <div className="container pro-page">
+        <div className="pro-heading">
+          <div>
+            <span className="kicker">Photographer workspace</span>
+            <h1>{title}</h1>
+            {subtitle && <p>{subtitle}</p>}
+          </div>
+          {aside}
+        </div>
+        <nav className="pro-tabs">
+          <NavLink to="/photographer/bookings">Bookings & calendar</NavLink>
+          <NavLink to="/photographer/rules">Rules & settings</NavLink>
+          <NavLink to="/photographer/profile">Profile settings</NavLink>
+        </nav>
+        {children}
+      </div>
+    </main>
+  )
+}
+
+export function ProLoading({ state, text }) {
+  return (
+    <main className="page-alt">
+      <div className="container pro-page">
+        {state.status === 'loading' ? <Loading /> : <ErrorState text={text} onRetry={state.retry} />}
+      </div>
+    </main>
   )
 }
 

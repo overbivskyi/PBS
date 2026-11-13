@@ -12,7 +12,7 @@ import seedPhotographers from '../data/photographers.json'
 import seedEvents from '../data/events.json'
 import seedReviews from '../data/reviews.json'
 import { rankSearch, daySlots, checkSlot } from './matching.js'
-import { addDays } from './time.js'
+import { addDays, toMin } from './time.js'
 
 const KEY = 'pbs.v1.'
 const LATENCY = 120
@@ -87,12 +87,19 @@ export async function search(params) {
 }
 
 // 7 days of start times for the profile calendar.
-export async function weekAvailability({ photographerId, from, duration, area, step = 30 }) {
+// `extra` ('HH:MM') adds one more start time to every day, e.g. the searched time.
+export async function weekAvailability({ photographerId, from, duration, area, step = 30, extra = null }) {
   const p = allPhotographersSync().find((x) => x.id === photographerId)
   const events = eventsSync(photographerId)
   const days = Array.from({ length: 7 }, (_, i) => {
     const date = addDays(from, i)
-    const slots = daySlots({ photographer: p, events: events.filter((e) => e.date === date), duration, area, travel, step })
+    const dayEvents = events.filter((e) => e.date === date)
+    const slots = daySlots({ photographer: p, events: dayEvents, duration, area, travel, step })
+    if (extra && !slots.some((x) => x.time === extra)) {
+      const start = toMin(extra)
+      slots.push({ start, time: extra, ...checkSlot({ photographer: p, events: dayEvents, start, duration, area, travel }) })
+      slots.sort((a, b) => a.start - b.start)
+    }
     return { date, slots }
   })
   return wait(days)

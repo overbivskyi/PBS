@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Art, Avatar, Field, Loading, ErrorState } from '../../components/ui.jsx'
+import { Field, Icon, Toast } from '../../components/ui.jsx'
 import { useAsync } from '../../lib/hooks.js'
-import { getPhotographer, saveProfile, styleName } from '../../lib/store.js'
-import { PhotographerGate, PhotographerTabs, readImage } from './common.jsx'
+import { getPhotographer, saveProfile } from '../../lib/store.js'
+import { avatarSrc, portfolioSrc } from '../../lib/photos.js'
+import { PhotographerGate, ProPage, ProLoading, readImage } from './common.jsx'
 
 const MAX_PHOTOS = 12
 const MIN_PHOTOS = 3
@@ -15,16 +16,17 @@ export default function ProfileSettings() {
 
 function Loader({ id }) {
   const data = useAsync(() => getPhotographer(id), [id])
-  if (data.status === 'loading') return <div className="container page"><Loading /></div>
-  if (data.status === 'error') return <div className="container page"><ErrorState text="We could not load your profile. Try again." onRetry={data.retry} /></div>
+  if (data.status !== 'ready') return <ProLoading state={data} text="We could not load your profile. Try again." />
   return <ProfileForm key={id} photographer={data.data} />
 }
 
 function ProfileForm({ photographer: p }) {
-  const [f, setF] = useState({
+  // Keep the shown photos stable while editing: generated photographers get their demo photos as real items.
+  const [f, setF] = useState(() => ({
     photo: p.photo, firstName: p.firstName, lastName: p.lastName, about: p.about,
-    skills: p.skills, gear: p.gear.join('\n'), portfolio: p.portfolio,
-  })
+    skills: p.skills, gear: p.gear.join('\n'),
+    portfolio: p.portfolio.map((item, i) => ({ ...item, src: portfolioSrc(p, item, i, 800) })),
+  }))
   const [skill, setSkill] = useState('')
   const [photoError, setPhotoError] = useState(null)
   const [portfolioError, setPortfolioError] = useState(null)
@@ -32,7 +34,13 @@ function ProfileForm({ photographer: p }) {
   const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState(null)
   const dragFrom = useRef(null)
-  const set = (k, v) => { setF((x) => ({ ...x, [k]: v })); setSaved(false) }
+  const set = (k, v) => setF((x) => ({ ...x, [k]: v }))
+
+  useEffect(() => {
+    if (!saved) return
+    const t = setTimeout(() => setSaved(false), 3000)
+    return () => clearTimeout(t)
+  }, [saved])
 
   const errors = {
     firstName: !f.firstName.trim() ? 'Fill in this field' : null,
@@ -66,7 +74,7 @@ function ProfileForm({ photographer: p }) {
         setPortfolioError(`${file.name}: ${err.message}`)
       }
     }
-    set('portfolio', [...f.portfolio, ...added])
+    setF((x) => ({ ...x, portfolio: [...x.portfolio, ...added] }))
   }
 
   function move(from, to) {
@@ -77,8 +85,7 @@ function ProfileForm({ photographer: p }) {
     set('portfolio', list)
   }
 
-  function addSkill(e) {
-    e.preventDefault()
+  function addSkill() {
     const v = skill.trim()
     if (v && !f.skills.includes(v)) set('skills', [...f.skills, v])
     setSkill('')
@@ -101,78 +108,103 @@ function ProfileForm({ photographer: p }) {
   }
 
   return (
-    <div className="container page narrow">
-      <PhotographerTabs />
-      <h1>Profile settings</h1>
-      {!p.rulesDone && <p className="note">You appear in the search after you save both your profile and your <Link to="/photographer/rules">rules</Link>.</p>}
-      <form className="card form" onSubmit={save} noValidate>
-        <div className="photo-row">
-          <Avatar person={{ ...p, photo: f.photo, firstName: f.firstName, lastName: f.lastName }} size={88} />
-          <label className="btn">
-            Change photo
-            <input type="file" accept="image/jpeg,image/png" hidden onChange={changePhoto} />
-          </label>
-          {photoError && <span className="field-error">{photoError}</span>}
-        </div>
-
-        <div className="grid-2">
-          <Field label="First name" error={tried ? errors.firstName : null}><input value={f.firstName} onChange={(e) => set('firstName', e.target.value)} /></Field>
-          <Field label="Last name"><input value={f.lastName} onChange={(e) => set('lastName', e.target.value)} /></Field>
-        </div>
-
-        <Field label="About" hint={`${f.about.length} / ${ABOUT_MAX}`}>
-          <textarea rows="4" maxLength={ABOUT_MAX} value={f.about} onChange={(e) => set('about', e.target.value)} />
-        </Field>
-
-        <div className="field">
-          <span className="field-label">Skills</span>
-          <div className="tags">
-            {f.skills.map((s) => (
-              <span key={s} className="tag tag-edit">
-                {s} <button type="button" aria-label={`Remove ${s}`} onClick={() => set('skills', f.skills.filter((x) => x !== s))}>×</button>
-              </span>
-            ))}
-          </div>
-          <div className="inline">
-            <input value={skill} onChange={(e) => setSkill(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addSkill(e)} placeholder="New skill" />
-            <button type="button" className="btn" onClick={addSkill}>Add</button>
-          </div>
-        </div>
-
-        <Field label="Gear" hint="One item per line">
-          <textarea rows="4" value={f.gear} onChange={(e) => set('gear', e.target.value)} />
-        </Field>
-
-        <div className={`field ${(tried && errors.portfolio) || portfolioError ? 'has-error' : ''}`}>
-          <span className="field-label">Portfolio <span className="muted">({f.portfolio.length} / {MAX_PHOTOS}, drag to reorder)</span></span>
-          <div className="portfolio">
-            {f.portfolio.map((ph, i) => (
-              <div key={ph.id} className="portfolio-item" draggable
-                onDragStart={() => { dragFrom.current = i }}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={() => move(dragFrom.current, i)}>
-                <Art seed={ph.id} src={ph.src} label={ph.style ? styleName(ph.style) : ''} />
-                <button type="button" className="remove" aria-label="Remove photo" onClick={() => set('portfolio', f.portfolio.filter((x) => x.id !== ph.id))}>×</button>
+    <ProPage
+      title="Profile settings"
+      subtitle="Help clients understand your style before they book."
+      aside={<Link className="btn btn-secondary" to={`/photographer/${p.id}`}>View my profile</Link>}
+    >
+      {!p.rulesDone && (
+        <p className="note">You appear in the search after you save both your profile and your <Link to="/photographer/rules">rules</Link>.</p>
+      )}
+      <form onSubmit={save} noValidate>
+        <div className="profile-settings">
+          <section className="form-card">
+            <div className="setting-title">
+              <span className="setting-icon"><Icon name="user" /></span>
+              <div>
+                <h2>Your profile</h2>
+                <p>The essentials clients see in search.</p>
               </div>
-            ))}
-          </div>
-          {f.portfolio.length < MAX_PHOTOS && (
-            <label className="btn">
-              Add photos
-              <input type="file" accept="image/jpeg,image/png" multiple hidden onChange={addPhotos} />
-            </label>
-          )}
-          {portfolioError && <span className="field-error">{portfolioError}</span>}
-          {tried && errors.portfolio && <span className="field-error">{errors.portfolio}</span>}
+            </div>
+            <div className="photo-upload">
+              <img src={f.photo || avatarSrc(p, 200)} alt="Profile" />
+              <div>
+                <label className="btn btn-secondary">
+                  <Icon name="edit" size={17} /> Change photo
+                  <input type="file" accept="image/jpeg,image/png" hidden onChange={changePhoto} />
+                </label>
+                <span>JPG or PNG</span>
+                {photoError && <em className="field-error">{photoError}</em>}
+              </div>
+            </div>
+            <div className="two-col">
+              <Field label="First name" error={tried ? errors.firstName : null}><input value={f.firstName} onChange={(e) => set('firstName', e.target.value)} /></Field>
+              <Field label="Last name"><input value={f.lastName} onChange={(e) => set('lastName', e.target.value)} /></Field>
+            </div>
+            <Field label="About" note={`${f.about.length} / ${ABOUT_MAX}`}>
+              <textarea rows={5} maxLength={ABOUT_MAX} value={f.about} onChange={(e) => set('about', e.target.value)} />
+            </Field>
+            <div className="field">
+              <span>Skills</span>
+              <div className="select-tags">
+                {f.skills.map((s) => (
+                  <button type="button" className="active" key={s} aria-label={`Remove ${s}`} onClick={() => set('skills', f.skills.filter((x) => x !== s))}>
+                    {s} <Icon name="close" size={13} />
+                  </button>
+                ))}
+                <span className="skill-add">
+                  <input value={skill} onChange={(e) => setSkill(e.target.value)} placeholder="Add skill"
+                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addSkill() } }} />
+                  <button type="button" onClick={addSkill} aria-label="Add skill"><Icon name="plus" size={14} /></button>
+                </span>
+              </div>
+            </div>
+            <Field label="Gear" note="One item per line">
+              <textarea rows={3} value={f.gear} onChange={(e) => set('gear', e.target.value)} />
+            </Field>
+          </section>
+
+          <section className="form-card">
+            <div className="setting-title">
+              <span className="setting-icon"><Icon name="image" /></span>
+              <div>
+                <h2>Portfolio</h2>
+                <p>Show 3 to 12 photos. Drag to reorder; the first one is the cover.</p>
+              </div>
+            </div>
+            <div className="settings-gallery">
+              {f.portfolio.map((ph, i) => (
+                <div key={ph.id} draggable
+                  onDragStart={() => { dragFrom.current = i }}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => move(dragFrom.current, i)}>
+                  <img src={ph.src} alt={`Portfolio ${i + 1}`} />
+                  <button type="button" aria-label="Remove photo" onClick={() => set('portfolio', f.portfolio.filter((x) => x.id !== ph.id))}>
+                    <Icon name="close" size={14} />
+                  </button>
+                  {i === 0 && <span>Cover</span>}
+                </div>
+              ))}
+              {f.portfolio.length < MAX_PHOTOS && (
+                <label className="add-photo">
+                  <Icon name="plus" />
+                  <span>Add photos</span>
+                  <small>{f.portfolio.length} of {MAX_PHOTOS}</small>
+                  <input type="file" accept="image/jpeg,image/png" multiple hidden onChange={addPhotos} />
+                </label>
+              )}
+            </div>
+            {portfolioError && <em className="field-error">{portfolioError}</em>}
+            {tried && errors.portfolio && <em className="field-error">{errors.portfolio}</em>}
+          </section>
         </div>
 
-        <div className="actions">
-          <button className="btn btn-primary btn-lg">Save profile</button>
-          <Link className="btn btn-lg" to={`/photographer/${p.id}`}>View my profile</Link>
+        <div className="sticky-save">
+          <span>{saveError ? <em className="field-error">{saveError}</em> : 'Your public profile updates at once.'}</span>
+          <button className="btn btn-primary">Save profile</button>
         </div>
-        {saved && <p className="success" role="status">Profile saved</p>}
-        {saveError && <p className="field-error" role="alert">{saveError}</p>}
       </form>
-    </div>
+      {saved && <Toast>Profile saved</Toast>}
+    </ProPage>
   )
 }
