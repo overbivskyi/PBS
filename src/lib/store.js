@@ -13,6 +13,7 @@ import seedEvents from '../data/events.json'
 import seedReviews from '../data/reviews.json'
 import { rankSearch, daySlots, checkSlot } from './matching.js'
 import { addDays, toMin } from './time.js'
+import { d } from './i18n.js'
 
 const KEY = 'pbs.v1.'
 const LATENCY = 120
@@ -42,22 +43,39 @@ export class StoreError extends Error {
 // ---------- catalog (sync, static) ----------
 
 export const catalog = { areas, styles, travel, meta }
-export const areaName = (id) => areas.find((a) => a.id === id)?.name ?? id
-export const styleName = (id) => styles.find((s) => s.id === id)?.name ?? id
+export const areaName = (id) => d(areas.find((a) => a.id === id)?.name ?? id)
+export const styleName = (id) => d(styles.find((s) => s.id === id)?.name ?? id)
+export const styleGroup = (id) => d(styles.find((s) => s.id === id)?.group ?? '')
+
+// Generated data is stored in English; in Ukrainian it is shown translated (src/lib/i18n.js).
+// What testers type stays as typed.
+function localizePhotographer(p) {
+  return {
+    ...p,
+    firstName: d(p.firstName),
+    lastName: d(p.lastName),
+    about: d(p.about),
+    skills: p.skills.map(d),
+    gear: p.gear.map(d),
+  }
+}
+function localizeEvent(e) {
+  return { ...e, clientName: d(e.clientName), title: d(e.title), address: d(e.address) }
+}
 
 // ---------- photographers ----------
 
 function allPhotographersSync() {
   const overrides = read('overrides', {})
   const testers = read('photographers', [])
-  return [...seedPhotographers, ...testers].map((p) => {
+  return [...seedPhotographers.map(localizePhotographer), ...testers].map((p) => {
     const o = overrides[p.id]
     return o ? { ...p, ...o, rules: { ...p.rules, ...o.rules } } : p
   })
 }
 
 function eventsSync(photographerId) {
-  const all = [...seedEvents, ...read('events', [])]
+  const all = [...seedEvents.map(localizeEvent), ...read('events', [])]
   return photographerId ? all.filter((e) => e.photographerId === photographerId) : all
 }
 
@@ -72,7 +90,7 @@ export async function getPhotographer(id) {
 }
 
 export async function getReviews(photographerId) {
-  return wait(seedReviews.filter((r) => r.photographerId === photographerId).slice(0, 5))
+  return wait(seedReviews.filter((r) => r.photographerId === photographerId).slice(0, 5).map((r) => ({ ...r, clientName: d(r.clientName), text: d(r.text) })))
 }
 
 export async function listEvents(photographerId) {

@@ -5,6 +5,7 @@ import { useAsync } from '../../lib/hooks.js'
 import { getPhotographer, saveProfile } from '../../lib/store.js'
 import { avatarSrc, portfolioSrc } from '../../lib/photos.js'
 import { PhotographerGate, ProPage, ProLoading, readImage } from './common.jsx'
+import { t } from '../../lib/i18n.js'
 
 const MAX_PHOTOS = 12
 const MIN_PHOTOS = 3
@@ -16,7 +17,7 @@ export default function ProfileSettings() {
 
 function Loader({ id }) {
   const data = useAsync(() => getPhotographer(id), [id])
-  if (data.status !== 'ready') return <ProLoading state={data} text="We could not load your profile. Try again." />
+  if (data.status !== 'ready') return <ProLoading state={data} text={t('We could not load your profile. Try again.')} />
   return <ProfileForm key={id} photographer={data.data} />
 }
 
@@ -43,8 +44,8 @@ function ProfileForm({ photographer: p }) {
   }, [saved])
 
   const errors = {
-    firstName: !f.firstName.trim() ? 'Fill in this field' : null,
-    portfolio: f.portfolio.length < MIN_PHOTOS ? `Add at least ${MIN_PHOTOS} photos` : null,
+    firstName: !f.firstName.trim() ? t('Fill in this field') : null,
+    portfolio: f.portfolio.length < MIN_PHOTOS ? t('Add at least {n} photos', { n: MIN_PHOTOS }) : null,
   }
   const valid = !errors.firstName && !errors.portfolio
 
@@ -56,7 +57,7 @@ function ProfileForm({ photographer: p }) {
       set('photo', await readImage(file, 400))
       setPhotoError(null)
     } catch (err) {
-      setPhotoError(err.message)
+      setPhotoError(t(err.message))
     }
   }
 
@@ -65,13 +66,13 @@ function ProfileForm({ photographer: p }) {
     e.target.value = ''
     setPortfolioError(null)
     const room = MAX_PHOTOS - f.portfolio.length
-    if (files.length > room) setPortfolioError(`You can have up to ${MAX_PHOTOS} photos`)
+    if (files.length > room) setPortfolioError(t('You can have up to {n} photos', { n: MAX_PHOTOS }))
     const added = []
     for (const file of files.slice(0, room)) {
       try {
         added.push({ id: `${p.id}-u${Date.now()}-${added.length}`, src: await readImage(file) })
       } catch (err) {
-        setPortfolioError(`${file.name}: ${err.message}`)
+        setPortfolioError(`${file.name}: ${t(err.message)}`)
       }
     }
     setF((x) => ({ ...x, portfolio: [...x.portfolio, ...added] }))
@@ -103,18 +104,18 @@ function ProfileForm({ photographer: p }) {
       setSaved(true)
       setSaveError(null)
     } catch {
-      setSaveError('Could not save: the photos are too large for browser storage. Remove some photos and try again.')
+      setSaveError(t('Could not save: the photos are too large for browser storage. Remove some photos and try again.'))
     }
   }
 
   return (
     <ProPage
-      title="Profile settings"
-      subtitle="Help clients understand your style before they book."
-      aside={<Link className="btn btn-secondary" to={`/photographer/${p.id}`}>View my profile</Link>}
+      title={t('Profile settings')}
+      subtitle={t('Help clients understand your style before they book.')}
+      aside={<Link className="btn btn-secondary" to={`/photographer/${p.id}`}>{t('View my profile')}</Link>}
     >
       {!p.rulesDone && (
-        <p className="note">You appear in the search after you save both your profile and your <Link to="/photographer/rules">rules</Link>.</p>
+        <p className="note">{t('You appear in the search after you save both your profile and your')} <Link to="/photographer/rules">{t('rules')}</Link>.</p>
       )}
       <form onSubmit={save} noValidate>
         <div className="profile-settings">
@@ -122,44 +123,44 @@ function ProfileForm({ photographer: p }) {
             <div className="setting-title">
               <span className="setting-icon"><Icon name="user" /></span>
               <div>
-                <h2>Your profile</h2>
-                <p>The essentials clients see in search.</p>
+                <h2>{t('Your profile')}</h2>
+                <p>{t('The essentials clients see in search.')}</p>
               </div>
             </div>
             <div className="photo-upload">
-              <img src={f.photo || avatarSrc(p, 200)} alt="Profile" />
+              <img src={f.photo || avatarSrc(p, 200)} alt={t('Profile')} />
               <div>
                 <label className="btn btn-secondary">
-                  <Icon name="edit" size={17} /> Change photo
+                  <Icon name="edit" size={17} /> {t('Change photo')}
                   <input type="file" accept="image/jpeg,image/png" hidden onChange={changePhoto} />
                 </label>
-                <span>JPG or PNG</span>
+                <span>{t('JPG or PNG')}</span>
                 {photoError && <em className="field-error">{photoError}</em>}
               </div>
             </div>
             <div className="two-col">
-              <Field label="First name" error={tried ? errors.firstName : null}><input value={f.firstName} onChange={(e) => set('firstName', e.target.value)} /></Field>
-              <Field label="Last name"><input value={f.lastName} onChange={(e) => set('lastName', e.target.value)} /></Field>
+              <Field label={t('First name')} error={tried ? errors.firstName : null}><input value={f.firstName} onChange={(e) => set('firstName', e.target.value)} /></Field>
+              <Field label={t('Last name')}><input value={f.lastName} onChange={(e) => set('lastName', e.target.value)} /></Field>
             </div>
-            <Field label="About" note={`${f.about.length} / ${ABOUT_MAX}`}>
+            <Field label={t('About')} note={`${f.about.length} / ${ABOUT_MAX}`}>
               <textarea rows={5} maxLength={ABOUT_MAX} value={f.about} onChange={(e) => set('about', e.target.value)} />
             </Field>
             <div className="field">
-              <span>Skills</span>
+              <span>{t('Skills')}</span>
               <div className="select-tags">
                 {f.skills.map((s) => (
-                  <button type="button" className="active" key={s} aria-label={`Remove ${s}`} onClick={() => set('skills', f.skills.filter((x) => x !== s))}>
+                  <button type="button" className="active" key={s} aria-label={t('Remove {s}', { s })} onClick={() => set('skills', f.skills.filter((x) => x !== s))}>
                     {s} <Icon name="close" size={13} />
                   </button>
                 ))}
                 <span className="skill-add">
-                  <input value={skill} onChange={(e) => setSkill(e.target.value)} placeholder="Add skill"
+                  <input value={skill} onChange={(e) => setSkill(e.target.value)} placeholder={t('Add skill')}
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addSkill() } }} />
-                  <button type="button" onClick={addSkill} aria-label="Add skill"><Icon name="plus" size={14} /></button>
+                  <button type="button" onClick={addSkill} aria-label={t('Add skill')}><Icon name="plus" size={14} /></button>
                 </span>
               </div>
             </div>
-            <Field label="Gear" note="One item per line">
+            <Field label={t('Gear')} note={t('One item per line')}>
               <textarea rows={3} value={f.gear} onChange={(e) => set('gear', e.target.value)} />
             </Field>
           </section>
@@ -168,8 +169,8 @@ function ProfileForm({ photographer: p }) {
             <div className="setting-title">
               <span className="setting-icon"><Icon name="image" /></span>
               <div>
-                <h2>Portfolio</h2>
-                <p>Show 3 to 12 photos. Drag to reorder; the first one is the cover.</p>
+                <h2>{t('Portfolio')}</h2>
+                <p>{t('Show 3 to 12 photos. Drag to reorder; the first one is the cover.')}</p>
               </div>
             </div>
             <div className="settings-gallery">
@@ -178,18 +179,18 @@ function ProfileForm({ photographer: p }) {
                   onDragStart={() => { dragFrom.current = i }}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={() => move(dragFrom.current, i)}>
-                  <img src={ph.src} alt={`Portfolio ${i + 1}`} />
-                  <button type="button" aria-label="Remove photo" onClick={() => set('portfolio', f.portfolio.filter((x) => x.id !== ph.id))}>
+                  <img src={ph.src} alt={t('Open photo {n}', { n: i + 1 })} />
+                  <button type="button" aria-label={t('Remove photo')} onClick={() => set('portfolio', f.portfolio.filter((x) => x.id !== ph.id))}>
                     <Icon name="close" size={14} />
                   </button>
-                  {i === 0 && <span>Cover</span>}
+                  {i === 0 && <span>{t('Cover')}</span>}
                 </div>
               ))}
               {f.portfolio.length < MAX_PHOTOS && (
                 <label className="add-photo">
                   <Icon name="plus" />
-                  <span>Add photos</span>
-                  <small>{f.portfolio.length} of {MAX_PHOTOS}</small>
+                  <span>{t('Add photos')}</span>
+                  <small>{t('{n} of {max}', { n: f.portfolio.length, max: MAX_PHOTOS })}</small>
                   <input type="file" accept="image/jpeg,image/png" multiple hidden onChange={addPhotos} />
                 </label>
               )}
@@ -200,11 +201,11 @@ function ProfileForm({ photographer: p }) {
         </div>
 
         <div className="sticky-save">
-          <span>{saveError ? <em className="field-error">{saveError}</em> : 'Your public profile updates at once.'}</span>
-          <button className="btn btn-primary">Save profile</button>
+          <span>{saveError ? <em className="field-error">{saveError}</em> : t('Your public profile updates at once.')}</span>
+          <button className="btn btn-primary">{t('Save profile')}</button>
         </div>
       </form>
-      {saved && <Toast>Profile saved</Toast>}
+      {saved && <Toast>{t('Profile saved')}</Toast>}
     </ProPage>
   )
 }

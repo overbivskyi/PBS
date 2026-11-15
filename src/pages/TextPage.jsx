@@ -1,4 +1,5 @@
 // Simple text pages. Ihor's drafts (WBS 7.4, 7.6) replace this text.
+import { t } from '../lib/i18n.js'
 
 const TEXTS = {
   terms: {
@@ -20,14 +21,14 @@ const TEXTS = {
 }
 
 export default function TextPage({ kind }) {
-  const t = TEXTS[kind]
+  const page = TEXTS[kind]
   return (
     <main className="page-alt">
       <div className="container narrow-page">
         <article className="form-card prose">
-          <span className="kicker">Draft</span>
-          <h1>{t.title}</h1>
-          {t.body.map((p) => <p key={p}>{p}</p>)}
+          <span className="kicker">{t('Draft')}</span>
+          <h1>{t(page.title)}</h1>
+          {page.body.map((p) => <p key={p}>{t(p)}</p>)}
         </article>
       </div>
     </main>

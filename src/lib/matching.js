@@ -2,21 +2,26 @@
 // Pure functions: they get all data as arguments, so the same code can later run on the server.
 
 import { DAY_START, DAY_END, toHHMM, formatShift } from './time.js'
+import { t, d, getLang } from './i18n.js'
 
 export const POINTS = { style: 25, area: 25, time: 25, price: 25 }
 export const STYLE_MATCH = { same: 1, close: 0.6, related: 0.3, none: 0 }
 
+// Getters, so the text follows the current language (src/lib/i18n.js).
 export const REASONS = {
-  busy: 'Busy: another shoot at this time',
-  break: 'Needs a break after the previous shoot',
-  travel: 'Finishing another shoot across town',
-  daily: 'Fully booked on this day',
-  duration: (min, max) => `Takes shoots of ${min} to ${max} minutes`,
-  area: 'Does not travel to this area',
-  price: (over) => `${over} UAH/h over your budget`,
-  similar: (has, wanted) => `Similar style: ${has.toLowerCase()} instead of ${wanted.toLowerCase()}`,
-  style: 'Does not shoot this style',
-  hours: 'Outside working hours',
+  get busy() { return t('Busy: another shoot at this time') },
+  get break() { return t('Needs a break after the previous shoot') },
+  get travel() { return t('Finishing another shoot across town') },
+  get daily() { return t('Fully booked on this day') },
+  duration: (min, max) => t('Takes shoots of {min} to {max} minutes', { min, max }),
+  get area() { return t('Does not travel to this area') },
+  price: (over) => t('{n} UAH/h over your budget', { n: over }),
+  similar: (has, wanted) =>
+    getLang() === 'en'
+      ? t('Similar style: {has} instead of {wanted}', { has: has.toLowerCase(), wanted: wanted.toLowerCase() })
+      : t('Similar style: {has} instead of {wanted}', { has, wanted }),
+  get style() { return t('Does not shoot this style') },
+  get hours() { return t('Outside working hours') },
 }
 
 // ---------- style ----------
@@ -36,7 +41,7 @@ export function styleCheck(wantedIds, photographerStyles, styles) {
   const matches = wantedIds.map((id) => ({ wanted: id, ...styleMatch(id, photographerStyles, styles) }))
   const score = matches.reduce((sum, m) => sum + m.score, 0) / Math.max(matches.length, 1)
   const exact = matches.some((m) => m.level === 'same')
-  const name = (id) => styles.find((s) => s.id === id)?.name ?? id
+  const name = (id) => d(styles.find((s) => s.id === id)?.name ?? id)
   let reason = null
   if (!exact) {
     const best = [...matches].sort((a, b) => b.score - a.score)[0]
@@ -140,7 +145,7 @@ export function evaluate({ photographer, events, search, styles, travel }) {
     area: { ok: inArea, reason: inArea ? null : REASONS.area },
     time: {
       ok: timeOk || !inArea, // area miss already explains the time
-      reason: timeOk ? null : nearest ? `Free from ${nearest.time}, ${formatShift(nearest.start - search.start)}` : chosen.reason,
+      reason: timeOk ? null : nearest ? t('Free from {time}, {shift}', { time: nearest.time, shift: formatShift(nearest.start - search.start) }) : chosen.reason,
       blockedReason: timeOk ? null : chosen.reason,
     },
     price: { ok: priceOk, reason: priceOk ? null : REASONS.price(photographer.pricePerHour - search.budget) },

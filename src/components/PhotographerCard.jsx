@@ -4,6 +4,7 @@ import { areaName } from '../lib/store.js'
 import { searchToQuery } from '../lib/hooks.js'
 import { uah, toMin } from '../lib/time.js'
 import { Icon, Photo, Rating, StyleTags } from './ui.jsx'
+import { t } from '../lib/i18n.js'
 
 const PARTS = [
   ['style', 'Style'],
@@ -23,7 +24,7 @@ export default function PhotographerCard({ result, search, best = false, missTex
 
   return (
     <article className={`result-card ${best ? 'best-card' : ''}`}>
-      {best && <span className="best-badge">Best match</span>}
+      {best && <span className="best-badge">{t('Best match')}</span>}
       <Link to={`/photographer/${p.id}?${query}`} className="result-avatar-link">
         <Photo photographer={p} width={400} className="result-avatar" />
       </Link>
@@ -33,9 +34,9 @@ export default function PhotographerCard({ result, search, best = false, missTex
             <h3><Link to={`/photographer/${p.id}?${query}`}>{p.firstName} {p.lastName}</Link></h3>
             <Rating value={p.rating} shoots={p.completedShoots} />
           </div>
-          <button className="fit-score" onClick={() => setShowFit((v) => !v)} aria-expanded={showFit} title="Why this score">
+          <button className="fit-score" onClick={() => setShowFit((v) => !v)} aria-expanded={showFit} title={t('Why this score')}>
             <strong>{result.score}%</strong>
-            <span>fit</span>
+            <span>{t('fit')}</span>
           </button>
         </div>
         {showFit && (
@@ -43,7 +44,7 @@ export default function PhotographerCard({ result, search, best = false, missTex
             {PARTS.map(([k, label]) => (
               <li key={k} className={result.conditions[k].ok ? 'ok' : 'no'}>
                 <Icon name={result.conditions[k].ok ? 'check' : 'close'} size={14} />
-                {label}
+                {t(label)}
                 {!result.conditions[k].ok && <span>{result.conditions[k].reason}</span>}
               </li>
             ))}
@@ -52,17 +53,17 @@ export default function PhotographerCard({ result, search, best = false, missTex
         <StyleTags styles={p.styles} highlight={search.styles} />
         <div className="meta-row">
           <span><Icon name="location" size={17} />{areaName(p.homeArea)}</span>
-          <span><Icon name="distance" size={17} />Travels up to {p.rules.maxTravelMin} min</span>
+          <span><Icon name="distance" size={17} />{t('Travels up to {n} min', { n: p.rules.maxTravelMin })}</span>
         </div>
         {missText && (
           <div className="reason"><Icon name="clock" size={17} />{missText}</div>
         )}
         {chips.length > 0 && (
           <div className="times">
-            <span>Free start times</span>
+            <span>{t('Free start times')}</span>
             <div>
-              {chips.map((t) => (
-                <button key={t} className={`time ${t === time ? 'active' : ''}`} onClick={() => setTime(t)}>{t}</button>
+              {chips.map((tm) => (
+                <button key={tm} className={`time ${tm === time ? 'active' : ''}`} onClick={() => setTime(tm)}>{tm}</button>
               ))}
             </div>
           </div>
@@ -70,11 +71,11 @@ export default function PhotographerCard({ result, search, best = false, missTex
       </div>
       <div className="result-action">
         <div>
-          <span>{uah(p.pricePerHour)}/h</span>
-          <strong>{uah(result.total)} total</strong>
+          <span>{t('{price}/h', { price: uah(p.pricePerHour) })}</span>
+          <strong>{t('{total} total', { total: uah(result.total) })}</strong>
         </div>
-        <button className="btn btn-primary" disabled={!time} onClick={() => navigate(`/book?pid=${p.id}&${query}`)}>Book</button>
-        <Link className="btn btn-secondary" to={`/photographer/${p.id}?${query}`}>View profile</Link>
+        <button className="btn btn-primary" disabled={!time} onClick={() => navigate(`/book?pid=${p.id}&${query}`)}>{t('Book')}</button>
+        <Link className="btn btn-secondary" to={`/photographer/${p.id}?${query}`}>{t('View profile')}</Link>
       </div>
     </article>
   )

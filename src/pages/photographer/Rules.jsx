@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Field, Icon, Toast } from '../../components/ui.jsx'
 import { useAsync } from '../../lib/hooks.js'
-import { getPhotographer, listEvents, saveRules, catalog } from '../../lib/store.js'
+import { getPhotographer, listEvents, saveRules, catalog, areaName, styleName } from '../../lib/store.js'
 import { daySlots } from '../../lib/matching.js'
 import { addDays, weekStart } from '../../lib/time.js'
 import { PhotographerGate, ProPage, ProLoading, demoToday } from './common.jsx'
+import { t, plural } from '../../lib/i18n.js'
 
 export default function Rules() {
   return <PhotographerGate>{(id) => <RulesLoader id={id} />}</PhotographerGate>
@@ -12,7 +13,7 @@ export default function Rules() {
 
 function RulesLoader({ id }) {
   const data = useAsync(async () => ({ p: await getPhotographer(id), events: await listEvents(id) }), [id])
-  if (data.status !== 'ready') return <ProLoading state={data} text="We could not load your rules. Try again." />
+  if (data.status !== 'ready') return <ProLoading state={data} text={t('We could not load your rules. Try again.')} />
   return <RulesForm key={id} photographer={data.data.p} events={data.data.events} />
 }
 
@@ -32,13 +33,13 @@ function RulesForm({ photographer: p, events }) {
   }, [saved])
 
   const errors = {}
-  for (const k of NUM_FIELDS) if (f[k] === '' || Number.isNaN(n(k)) || n(k) < 0) errors[k] = 'Enter a number'
-  if (!errors.minShoot && n('minShoot') < 15) errors.minShoot = 'At least 15 minutes'
-  if (!errors.minShoot && !errors.maxShoot && n('minShoot') > n('maxShoot')) errors.minShoot = 'The shortest shoot cannot be longer than the longest shoot'
-  if (!errors.maxShoot && !errors.maxPerDay && n('maxShoot') > n('maxPerDay')) errors.maxShoot = 'The longest shoot cannot be longer than the maximum minutes per day'
-  if (!errors.maxTravelMin && n('maxTravelMin') < 10) errors.maxTravelMin = 'At least 10 minutes'
-  if (!errors.pricePerHour && n('pricePerHour') < 100) errors.pricePerHour = 'At least 100 UAH'
-  if (f.styles.length === 0) errors.styles = 'Choose at least one style'
+  for (const k of NUM_FIELDS) if (f[k] === '' || Number.isNaN(n(k)) || n(k) < 0) errors[k] = t('Enter a number')
+  if (!errors.minShoot && n('minShoot') < 15) errors.minShoot = t('At least 15 minutes')
+  if (!errors.minShoot && !errors.maxShoot && n('minShoot') > n('maxShoot')) errors.minShoot = t('The shortest shoot cannot be longer than the longest shoot')
+  if (!errors.maxShoot && !errors.maxPerDay && n('maxShoot') > n('maxPerDay')) errors.maxShoot = t('The longest shoot cannot be longer than the maximum minutes per day')
+  if (!errors.maxTravelMin && n('maxTravelMin') < 10) errors.maxTravelMin = t('At least 10 minutes')
+  if (!errors.pricePerHour && n('pricePerHour') < 100) errors.pricePerHour = t('At least 100 UAH')
+  if (f.styles.length === 0) errors.styles = t('Choose at least one style')
   const valid = Object.keys(errors).length === 0
 
   const rules = () => ({ breakMin: n('breakMin'), minShoot: n('minShoot'), maxShoot: n('maxShoot'), maxPerDay: n('maxPerDay'), maxTravelMin: n('maxTravelMin'), transport: f.transport })
@@ -66,22 +67,22 @@ function RulesForm({ photographer: p, events }) {
   }
 
   const num = (k, label, { unit = 'min', step = 15, min = 0 } = {}) => (
-    <Field label={label} error={errors[k]}>
+    <Field label={t(label)} error={errors[k]}>
       <div className="budget-input">
         <input type="number" inputMode="numeric" min={min} step={step} value={f[k]} onChange={(e) => set(k, e.target.value)} />
-        <span>{unit}</span>
+        <span>{t(unit)}</span>
       </div>
     </Field>
   )
 
   return (
     <ProPage
-      title="Rules & settings"
-      subtitle={`${p.firstName} ${p.lastName} · These rules decide which free times clients can book.`}
+      title={t('Rules & settings')}
+      subtitle={`${p.firstName} ${p.lastName} · ${t('These rules decide which free times clients can book.')}`}
       aside={preview != null && (
         <div className="availability-preview" aria-live="polite">
           <strong>{preview}</strong>
-          <span>free start times this week</span>
+          <span>{plural(preview, ['free start time this week', 'free start times this week'], ['вільний старт цього тижня', 'вільні старти цього тижня', 'вільних стартів цього тижня']).replace(String(preview), '').trim()}</span>
         </div>
       )}
     >
@@ -91,14 +92,14 @@ function RulesForm({ photographer: p, events }) {
             <div className="setting-title">
               <span className="setting-icon"><Icon name="clock" /></span>
               <div>
-                <h2>Timing rules</h2>
-                <p>Control your pace and daily workload.</p>
+                <h2>{t('Timing rules')}</h2>
+                <p>{t('Control your pace and daily workload.')}</p>
               </div>
             </div>
             <div className="two-col">
-              <Field label="Break between shoots">
+              <Field label={t('Break between shoots')}>
                 <select value={f.breakMin} onChange={(e) => set('breakMin', Number(e.target.value))}>
-                  {[0, 15, 30, 45, 60, 90].map((m) => <option key={m} value={m}>{m} min</option>)}
+                  {[0, 15, 30, 45, 60, 90].map((m) => <option key={m} value={m}>{t('{n} min', { n: m })}</option>)}
                 </select>
               </Field>
               {num('maxPerDay', 'Maximum minutes per day')}
@@ -111,24 +112,24 @@ function RulesForm({ photographer: p, events }) {
             <div className="setting-title">
               <span className="setting-icon"><Icon name="location" /></span>
               <div>
-                <h2>Travel & area</h2>
-                <p>Clients in areas further away than this do not see you.</p>
+                <h2>{t('Travel & area')}</h2>
+                <p>{t('Clients in areas further away than this do not see you.')}</p>
               </div>
             </div>
             <div className="two-col">
-              <Field label="Home area">
+              <Field label={t('Home area')}>
                 <select value={f.homeArea} onChange={(e) => set('homeArea', e.target.value)}>
-                  {catalog.areas.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
+                  {catalog.areas.map((a) => <option key={a.id} value={a.id}>{areaName(a.id)}</option>)}
                 </select>
               </Field>
               {num('maxTravelMin', 'Travel distance', { step: 5 })}
             </div>
             <div className="field">
-              <span>Transport</span>
-              <div className="segmented" role="radiogroup" aria-label="Transport">
+              <span>{t('Transport')}</span>
+              <div className="segmented" role="radiogroup" aria-label={t('Transport')}>
                 {TRANSPORT.map(([v, label]) => (
                   <button type="button" key={v} role="radio" aria-checked={f.transport === v} className={f.transport === v ? 'active' : ''} onClick={() => set('transport', v)}>
-                    {label}
+                    {t(label)}
                   </button>
                 ))}
               </div>
@@ -139,20 +140,20 @@ function RulesForm({ photographer: p, events }) {
             <div className="setting-title">
               <span className="setting-icon"><Icon name="camera" /></span>
               <div>
-                <h2>Services & price</h2>
-                <p>Choose what you shoot and your price per hour.</p>
+                <h2>{t('Services & price')}</h2>
+                <p>{t('Choose what you shoot and your price per hour.')}</p>
               </div>
             </div>
             {num('pricePerHour', 'Price per hour', { unit: 'UAH', step: 50, min: 100 })}
             <div className={`field ${errors.styles ? 'has-error' : ''}`}>
-              <span>Styles</span>
+              <span>{t('Styles')}</span>
               <div className="select-tags">
                 {catalog.styles.map((s) => {
                   const on = f.styles.includes(s.id)
                   return (
                     <button type="button" key={s.id} className={on ? 'active' : ''} aria-pressed={on}
                       onClick={() => set('styles', on ? f.styles.filter((x) => x !== s.id) : [...f.styles, s.id])}>
-                      {on && <Icon name="check" size={14} />} {s.name}
+                      {on && <Icon name="check" size={14} />} {styleName(s.id)}
                     </button>
                   )
                 })}
@@ -163,11 +164,11 @@ function RulesForm({ photographer: p, events }) {
         </div>
 
         <div className="sticky-save">
-          <span>{valid ? 'Changes apply to new bookings. The search uses them at once.' : 'Fix the fields marked in red to save.'}</span>
-          <button className="btn btn-primary" disabled={!valid}>Save rules</button>
+          <span>{valid ? t('Changes apply to new bookings. The search uses them at once.') : t('Fix the fields marked in red to save.')}</span>
+          <button className="btn btn-primary" disabled={!valid}>{t('Save rules')}</button>
         </div>
       </form>
-      {saved && <Toast>Rules saved. New bookings follow them.</Toast>}
+      {saved && <Toast>{t('Rules saved. New bookings follow them.')}</Toast>}
     </ProPage>
   )
 }

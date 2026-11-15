@@ -3,6 +3,8 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-do
 import { useSession, useAsync } from '../lib/hooks.js'
 import { logOut, setView, listPhotographers, resetDemo } from '../lib/store.js'
 import { Icon } from './ui.jsx'
+import { getLang, setLang } from '../lib/i18n.js'
+import { t } from '../lib/i18n.js'
 
 export const SERVICE_NAME = 'Snaply' // working name (open question 6)
 
@@ -50,16 +52,17 @@ function Header() {
       <div className="nav-wrap">
         <Logo />
         <nav className={`nav-links ${open ? 'nav-open' : ''}`}>
-          <NavLink to="/search">Find a photographer</NavLink>
-          <NavLink to={forPhotographers}>For photographers</NavLink>
+          <NavLink to="/search">{t('Find a photographer')}</NavLink>
+          <NavLink to={forPhotographers}>{t('For photographers')}</NavLink>
           {!user && (
             <span className="mobile-only nav-auth">
-              <Link to={`/login?next=${next}`}>Log in</Link>
-              <Link to="/signup">Sign up</Link>
+              <Link to={`/login?next=${next}`}>{t('Log in')}</Link>
+              <Link to="/signup">{t('Sign up')}</Link>
             </span>
           )}
         </nav>
         <div className="nav-actions">
+          <LangSwitch />
           {!user && <RoleSwitch view={view} />}
           {user ? (
             <div className="account">
@@ -71,27 +74,40 @@ function Header() {
                 <div className="account-menu">
                   {user.role === 'photographer' && (
                     <>
-                      <Link to="/photographer/bookings">My bookings</Link>
-                      <Link to="/photographer/rules">Rules</Link>
-                      <Link to="/photographer/profile">Profile settings</Link>
+                      <Link to="/photographer/bookings">{t('My bookings')}</Link>
+                      <Link to="/photographer/rules">{t('Rules')}</Link>
+                      <Link to="/photographer/profile">{t('Profile settings')}</Link>
                     </>
                   )}
-                  <button onClick={() => { logOut(); navigate('/') }}>Log out</button>
+                  <button onClick={() => { logOut(); navigate('/') }}>{t('Log out')}</button>
                 </div>
               )}
             </div>
           ) : (
             <>
-              <Link className="btn btn-ghost desktop-only" to={`/login?next=${next}`}>Log in</Link>
-              <Link className="btn btn-primary desktop-only nav-signup" to="/signup">Sign up</Link>
+              <Link className="btn btn-ghost desktop-only" to={`/login?next=${next}`}>{t('Log in')}</Link>
+              <Link className="btn btn-primary desktop-only nav-signup" to="/signup">{t('Sign up')}</Link>
             </>
           )}
-          <button className="menu-button" onClick={() => setOpen(!open)} aria-label="Open menu" aria-expanded={open}>
+          <button className="menu-button" onClick={() => setOpen(!open)} aria-label={t('Open menu')} aria-expanded={open}>
             <Icon name={open ? 'close' : 'menu'} />
           </button>
         </div>
       </div>
     </header>
+  )
+}
+
+export function LangSwitch() {
+  const lang = getLang()
+  return (
+    <div className="lang-switch" role="group" aria-label={t('Language')}>
+      {[['en', 'EN'], ['uk', 'УКР']].map(([code, label]) => (
+        <button key={code} className={lang === code ? 'active' : ''} aria-pressed={lang === code} onClick={() => setLang(code)}>
+          {label}
+        </button>
+      ))}
+    </div>
   )
 }
 
@@ -101,8 +117,8 @@ function RoleSwitch({ view }) {
   const navigate = useNavigate()
   const { data: photographers } = useAsync(() => listPhotographers(), [])
   return (
-    <div className="team-switch" title="Team view: a debugging tool for the team">
-      <div className="role-switch" aria-label="Team view">
+    <div className="team-switch" title={t('Team view: a debugging tool for the team')}>
+      <div className="role-switch" aria-label={t('Team view')}>
         {['client', 'photographer'].map((r) => (
           <button
             key={r}
@@ -112,12 +128,12 @@ function RoleSwitch({ view }) {
               navigate(r === 'photographer' ? '/photographer/bookings' : '/')
             }}
           >
-            {r === 'client' ? 'Client' : 'Photographer'}
+            {r === 'client' ? t('Client') : t('Photographer')}
           </button>
         ))}
       </div>
       {view.role === 'photographer' && photographers && (
-        <select aria-label="Photographer" value={view.photographerId} onChange={(e) => setView({ photographerId: e.target.value })}>
+        <select aria-label={t('Photographer')} value={view.photographerId} onChange={(e) => setView({ photographerId: e.target.value })}>
           {photographers.map((p) => (
             <option key={p.id} value={p.id}>
               {p.firstName} {p.lastName}{p.userType === 'tester' ? ' (tester)' : ''}
@@ -135,20 +151,20 @@ function Footer() {
     <footer>
       <div className="footer-inner">
         <Logo />
-        <p>Course demo: generated profiles and real testers. No real payments.</p>
+        <p>{t('Course demo: generated profiles and real testers. No real payments.')}</p>
         <div>
-          <Link to="/terms">Terms of service</Link>
-          <Link to="/privacy">Privacy policy</Link>
+          <Link to="/terms">{t('Terms of service')}</Link>
+          <Link to="/privacy">{t('Privacy policy')}</Link>
           <button
             className="footer-reset"
             onClick={() => {
-              if (confirm('Delete all accounts, bookings and edits made in this browser?')) {
+              if (confirm(t('Delete all accounts, bookings and edits made in this browser?'))) {
                 resetDemo()
                 navigate('/')
               }
             }}
           >
-            Reset demo data
+            {t('Reset demo data')}
           </button>
         </div>
       </div>

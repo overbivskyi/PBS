@@ -3,6 +3,7 @@ import { useSession } from '../../lib/hooks.js'
 import { catalog } from '../../lib/store.js'
 import { Icon, Loading, ErrorState } from '../../components/ui.jsx'
 import { addDays } from '../../lib/time.js'
+import { t } from '../../lib/i18n.js'
 
 // The demo runs on fixed dates. "Today" is the real date while it is inside the demo weeks,
 // otherwise the first demo day.
@@ -20,11 +21,11 @@ export function PhotographerGate({ children }) {
       <main className="page-alt confirmation">
         <div className="confirmation-card gate">
           <span className="success-icon gate-icon"><Icon name="camera" size={30} /></span>
-          <h1>For photographers</h1>
-          <p>Log in as a photographer to see your bookings and rules.</p>
+          <h1>{t('For photographers')}</h1>
+          <p>{t('Log in as a photographer to see your bookings and rules.')}</p>
           <div className="confirmation-actions">
-            <Link className="btn btn-primary" to="/signup?role=photographer">Sign up</Link>
-            <Link className="btn btn-secondary" to="/login">Log in</Link>
+            <Link className="btn btn-primary" to="/signup?role=photographer">{t('Sign up')}</Link>
+            <Link className="btn btn-secondary" to="/login">{t('Log in')}</Link>
           </div>
         </div>
       </main>
@@ -40,16 +41,16 @@ export function ProPage({ title, subtitle, aside, children }) {
       <div className="container pro-page">
         <div className="pro-heading">
           <div>
-            <span className="kicker">Photographer workspace</span>
+            <span className="kicker">{t('Photographer workspace')}</span>
             <h1>{title}</h1>
             {subtitle && <p>{subtitle}</p>}
           </div>
           {aside}
         </div>
         <nav className="pro-tabs">
-          <NavLink to="/photographer/bookings">Bookings & calendar</NavLink>
-          <NavLink to="/photographer/rules">Rules & settings</NavLink>
-          <NavLink to="/photographer/profile">Profile settings</NavLink>
+          <NavLink to="/photographer/bookings">{t('Bookings & calendar')}</NavLink>
+          <NavLink to="/photographer/rules">{t('Rules & settings')}</NavLink>
+          <NavLink to="/photographer/profile">{t('Profile settings')}</NavLink>
         </nav>
         {children}
       </div>

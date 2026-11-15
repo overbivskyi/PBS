@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "data": "node scripts/generate-demo-data.mjs",
-    "check": "node scripts/check-scenario.mjs"
+    "check": "node scripts/check-scenario.mjs",
+    "check:i18n": "node scripts/check-i18n.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

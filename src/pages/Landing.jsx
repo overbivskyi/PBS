@@ -5,6 +5,7 @@ import { defaultSearch, scenarioSearch, searchToQuery, useAsync } from '../lib/h
 import { listPhotographers, styleName, areaName } from '../lib/store.js'
 import { PHOTOS, unsplash, portfolioSrc } from '../lib/photos.js'
 import { uah } from '../lib/time.js'
+import { t } from '../lib/i18n.js'
 
 const STEPS = [
   ['01', 'Tell us what you need', 'Choose your style, place, time and budget. It takes less than a minute.', 'edit'],
@@ -28,55 +29,55 @@ export default function Landing() {
         <div className="hero-blur hero-blur-two" />
         <div className="container hero-grid">
           <div className="hero-copy">
-            <span className="eyebrow"><span className="pulse" /> Photographers ready across Kyiv</span>
-            <h1>Book a photographer <span>in two taps</span></h1>
-            <p>Tell us what you need. We show only photographers who are free and can get there on time.</p>
+            <span className="eyebrow"><span className="pulse" /> {t('Photographers ready across Kyiv')}</span>
+            <h1>{t('Book a photographer')} <span>{t('in two taps')}</span></h1>
+            <p>{t('Tell us what you need. We show only photographers who are free and can get there on time.')}</p>
             {generated.length > 0 && (
               <div className="trust-row">
                 <div className="faces">
                   {generated.slice(0, 4).map((p) => <Photo key={p.id} photographer={p} width={80} alt="" />)}
                 </div>
                 <div>
-                  <strong>{avgRating.toFixed(1)} average rating</strong>
-                  <span>From {shoots.toLocaleString('en-US')} completed shoots</span>
+                  <strong>{t('{rating} average rating', { rating: avgRating.toFixed(1) })}</strong>
+                  <span>{t('From {n} completed shoots', { n: shoots.toLocaleString('en-US') })}</span>
                 </div>
               </div>
             )}
             <button className="text-link demo-link" onClick={() => navigate(`/search?${searchToQuery(demo)}`)}>
-              Try the demo search <Icon name="chevron" size={18} />
+              {t('Try the demo search')} <Icon name="chevron" size={18} />
             </button>
           </div>
           <div className="hero-collage">
-            <img className="hero-img-main" src={unsplash(PHOTOS.couple, 1200)} alt="Couple photographed in warm natural light" />
-            <img className="hero-img-side" src={unsplash(PHOTOS.family, 600)} alt="Family portrait outdoors" />
+            <img className="hero-img-main" src={unsplash(PHOTOS.couple, 1200)} alt={t('Couple photographed in warm natural light')} />
+            <img className="hero-img-side" src={unsplash(PHOTOS.family, 600)} alt={t('Family portrait outdoors')} />
             <div className="floating-card">
               <span className="floating-check"><Icon name="check" size={18} /></span>
               <div>
-                <strong>Best match found</strong>
-                <span>Free at {demo.time} in {areaName(demo.area)}</span>
+                <strong>{t('Best match found')}</strong>
+                <span>{t('Free at {time} in {area}', { time: demo.time, area: areaName(demo.area) })}</span>
               </div>
             </div>
           </div>
         </div>
         <div className="container search-float">
-          <SearchForm initial={defaultSearch()} submitText="Find photographers" onSubmit={(s) => navigate(`/search?${searchToQuery(s)}`)} />
+          <SearchForm initial={defaultSearch()} submitText={t('Find photographers')} onSubmit={(s) => navigate(`/search?${searchToQuery(s)}`)} />
         </div>
       </section>
 
       <section className="section how-section">
         <div className="container">
           <div className="section-heading">
-            <span className="kicker">How it works</span>
-            <h2>From idea to booked in minutes</h2>
-            <p>No endless messages. No schedule clashes. Just the right person at the right time.</p>
+            <span className="kicker">{t('How it works')}</span>
+            <h2>{t('From idea to booked in minutes')}</h2>
+            <p>{t('No endless messages. No schedule clashes. Just the right person at the right time.')}</p>
           </div>
           <div className="steps">
-            {STEPS.map(([n, t, d, i]) => (
+            {STEPS.map(([n, title, desc, i]) => (
               <div className="step" key={n}>
                 <span className="step-number">{n}</span>
                 <div className="step-icon"><Icon name={i} size={25} /></div>
-                <h3>{t}</h3>
-                <p>{d}</p>
+                <h3>{t(title)}</h3>
+                <p>{t(desc)}</p>
               </div>
             ))}
           </div>
@@ -87,10 +88,10 @@ export default function Landing() {
         <div className="container">
           <div className="section-top">
             <div>
-              <span className="kicker">Top in Kyiv</span>
-              <h2>Photographers clients love</h2>
+              <span className="kicker">{t('Top in Kyiv')}</span>
+              <h2>{t('Photographers clients love')}</h2>
             </div>
-            <Link className="text-link" to="/search">View all photographers <Icon name="chevron" size={18} /></Link>
+            <Link className="text-link" to="/search">{t('View all photographers')} <Icon name="chevron" size={18} /></Link>
           </div>
           {all.status === 'loading' && <Loading />}
           <div className="featured-grid">
@@ -107,7 +108,7 @@ export default function Landing() {
                   </div>
                   <p>{p.styles.map(styleName).join(' · ')}</p>
                   <div className="card-bottom">
-                    <span><strong>{uah(p.pricePerHour)}</strong>/h</span>
+                    <span><strong>{t('{price}/h', { price: uah(p.pricePerHour) })}</strong></span>
                     <span className="card-arrow"><Icon name="chevron" size={18} /></span>
                   </div>
                 </div>
@@ -119,18 +120,18 @@ export default function Landing() {
 
       <section className="container pro-cta">
         <div className="pro-visual">
-          <img src={unsplash(PHOTOS.editorial, 1000)} alt="Photographer at work" loading="lazy" />
+          <img src={unsplash(PHOTOS.editorial, 1000)} alt={t('Photographer at work')} loading="lazy" />
         </div>
         <div className="pro-copy">
-          <span className="kicker light">For photographers</span>
-          <h2>Get prepaid bookings without schedule clashes</h2>
-          <p>Set your rules once. We show clients only the times you can really make, and the deposit is paid before every shoot.</p>
+          <span className="kicker light">{t('For photographers')}</span>
+          <h2>{t('Get prepaid bookings without schedule clashes')}</h2>
+          <p>{t('Set your rules once. We show clients only the times you can really make, and the deposit is paid before every shoot.')}</p>
           <ul>
-            <li><Icon name="check" size={18} /> You control your prices and availability</li>
+            <li><Icon name="check" size={18} /> {t('You control your prices and availability')}</li>
             <li><Icon name="check" size={18} /> 30% deposit before every shoot</li>
-            <li><Icon name="check" size={18} /> Travel and break times counted for you</li>
+            <li><Icon name="check" size={18} /> {t('Travel and break times counted for you')}</li>
           </ul>
-          <Link className="btn btn-secondary" to="/signup?role=photographer">I am a photographer <Icon name="chevron" size={18} /></Link>
+          <Link className="btn btn-secondary" to="/signup?role=photographer">{t('I am a photographer')} <Icon name="chevron" size={18} /></Link>
         </div>
       </section>
     </main>

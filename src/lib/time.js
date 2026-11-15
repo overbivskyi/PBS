@@ -1,3 +1,5 @@
+import { getLang, locale, plural } from './i18n.js'
+
 // Times are minutes from midnight; dates are 'YYYY-MM-DD' strings.
 
 export const DAY_START = 8 * 60 // first possible start time
@@ -27,26 +29,32 @@ export function weekStart(date) {
 }
 
 export function formatDate(date, opts = { weekday: 'short', day: 'numeric', month: 'short' }) {
-  return new Date(date + 'T00:00:00Z').toLocaleDateString('en-GB', { timeZone: 'UTC', ...opts })
+  return new Date(date + 'T00:00:00Z').toLocaleDateString(locale(), { timeZone: 'UTC', ...opts })
 }
 
 export function formatDuration(min) {
   const h = Math.floor(min / 60)
   const m = min % 60
-  if (!h) return `${m} min`
-  return m ? `${h} h ${m} min` : `${h} h`
+  const [hh, mm] = getLang() === 'uk' ? ['год', 'хв'] : ['h', 'min']
+  if (!h) return `${m} ${mm}`
+  return m ? `${h} ${hh} ${m} ${mm}` : `${h} ${hh}`
 }
 
-// "2 hours later", "30 min earlier"
+// "2 hours later", "30 min earlier" / "на 2 години пізніше"
 export function formatShift(diff) {
   const abs = Math.abs(diff)
-  const word = diff > 0 ? 'later' : 'earlier'
+  const later = diff > 0
+  if (getLang() === 'uk') {
+    const amount = abs % 60 === 0 ? plural(abs / 60, [], ['{n} годину', '{n} години', '{n} годин']) : formatDuration(abs)
+    return `на ${amount} ${later ? 'пізніше' : 'раніше'}`
+  }
+  const word = later ? 'later' : 'earlier'
   if (abs % 60 === 0) return `${abs / 60} ${abs === 60 ? 'hour' : 'hours'} ${word}`
   return `${formatDuration(abs)} ${word}`
 }
 
 export function uah(n) {
-  return `${Math.round(n).toLocaleString('en-US').replace(/,/g, ' ')} UAH`
+  return `${Math.round(n).toLocaleString('en-US').replace(/,/g, ' ')} ${getLang() === 'uk' ? 'грн' : 'UAH'}`
 }
 
 export const TIME_OPTIONS = Array.from({ length: (DAY_END - DAY_START) / 15 }, (_, i) => toHHMM(DAY_START + i * 15))

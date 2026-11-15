@@ -4,6 +4,7 @@ import { Field, Icon, Loading, ErrorState, Modal, Photo, Rating } from '../compo
 import { useAsync, useSession, useSearchState, searchToQuery, isCompleteSearch } from '../lib/hooks.js'
 import { getPhotographer, createBooking, nearestFree, areaName, styleName } from '../lib/store.js'
 import { formatDate, toHHMM, toMin, uah } from '../lib/time.js'
+import { t } from '../lib/i18n.js'
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const PHONE_RE = /^\+?[\d\s()-]{10,}$/
@@ -17,20 +18,20 @@ export default function Booking() {
   const p = useAsync(() => getPhotographer(pid), [pid])
 
   const wrap = (children) => <main className="page-alt"><div className="container narrow-page">{children}</div></main>
-  if (!pid || !isCompleteSearch(s)) return wrap(<ErrorState text="This booking link is not complete." />)
+  if (!pid || !isCompleteSearch(s)) return wrap(<ErrorState text={t('This booking link is not complete.')} />)
   if (p.status === 'loading') return wrap(<Loading />)
-  if (p.status === 'error') return wrap(<ErrorState text="We could not load this photographer. Try again." onRetry={p.retry} />)
+  if (p.status === 'error') return wrap(<ErrorState text={t('We could not load this photographer. Try again.')} onRetry={p.retry} />)
 
   if (!user) {
     const next = encodeURIComponent(location.pathname + location.search)
     return wrap(
       <div className="confirmation-card gate">
         <span className="success-icon gate-icon"><Icon name="user" size={30} /></span>
-        <h1>Log in or sign up to book</h1>
-        <p>Your photographer, date and time stay selected.</p>
+        <h1>{t('Log in or sign up to book')}</h1>
+        <p>{t('Your photographer, date and time stay selected.')}</p>
         <div className="confirmation-actions">
-          <Link className="btn btn-primary" to={`/signup?role=client&next=${next}`}>Sign up</Link>
-          <Link className="btn btn-secondary" to={`/login?next=${next}`}>Log in</Link>
+          <Link className="btn btn-primary" to={`/signup?role=client&next=${next}`}>{t('Sign up')}</Link>
+          <Link className="btn btn-secondary" to={`/login?next=${next}`}>{t('Log in')}</Link>
         </div>
       </div>,
     )
@@ -56,11 +57,11 @@ function BookingForm({ photographer: ph, search, user }) {
   const set = (k, v) => setF((x) => ({ ...x, [k]: v }))
 
   const errors = {
-    address: !f.address.trim() ? 'Fill in this field' : null,
-    name: !f.name.trim() ? 'Fill in this field' : null,
-    phone: !f.phone.trim() ? 'Fill in this field' : !PHONE_RE.test(f.phone) ? 'Enter a phone number like +380 67 123 45 67' : null,
-    email: !f.email.trim() ? 'Fill in this field' : !EMAIL_RE.test(f.email) ? 'Enter an email like name@example.com' : null,
-    terms: !f.terms ? 'Please agree to continue' : null,
+    address: !f.address.trim() ? t('Fill in this field') : null,
+    name: !f.name.trim() ? t('Fill in this field') : null,
+    phone: !f.phone.trim() ? t('Fill in this field') : !PHONE_RE.test(f.phone) ? t('Enter a phone number like +380 67 123 45 67') : null,
+    email: !f.email.trim() ? t('Fill in this field') : !EMAIL_RE.test(f.email) ? t('Enter an email like name@example.com') : null,
+    terms: !f.terms ? t('Please agree to continue') : null,
   }
   const err = (k) => (tried ? errors[k] : null)
   const valid = Object.values(errors).every((x) => !x)
@@ -90,24 +91,24 @@ function BookingForm({ photographer: ph, search, user }) {
   }
 
   const changeTime = `/photographer/${ph.id}?${searchToQuery(search)}`
-  const payText = `Pay deposit ${uah(deposit)}`
+  const payText = t('Pay deposit {amount}', { amount: uah(deposit) })
 
   return (
     <main className="page-alt">
       <div className="container narrow-page">
-        <Link className="back-link" to={changeTime}><Icon name="arrow" size={18} /> Back to profile</Link>
+        <Link className="back-link" to={changeTime}><Icon name="arrow" size={18} /> {t('Back to profile')}</Link>
         <div className="checkout-head">
-          <span>Last step</span>
-          <h1>Book your shoot</h1>
-          <p>Check the details and pay the deposit. {ph.firstName} gets the booking at once.</p>
+          <span>{t('Last step')}</span>
+          <h1>{t('Book your shoot')}</h1>
+          <p>{t('Check the details and pay the deposit. {name} gets the booking at once.', { name: ph.firstName })}</p>
         </div>
 
         {taken && (
           <div className="alert" role="alert">
-            <strong>This time is no longer free</strong>
+            <strong>{t('This time is no longer free')}</strong>
             {taken.length ? (
               <div className="nearest-times">
-                <span>Nearest free times</span>
+                <span>{t('Nearest free times')}</span>
                 {taken.map((x) => (
                   <button key={x.time} className="time" onClick={() => { setTaken(null); navigate(`/book?pid=${ph.id}&${searchToQuery({ ...search, time: x.time })}`, { replace: true }) }}>
                     {x.time}
@@ -115,11 +116,11 @@ function BookingForm({ photographer: ph, search, user }) {
                 ))}
               </div>
             ) : (
-              <p>No free times left on this day. <Link to={changeTime}>Pick another day</Link></p>
+              <p>{t('No free times left on this day.')} <Link to={changeTime}>{t('Pick another day')}</Link></p>
             )}
           </div>
         )}
-        {failed && <div className="alert" role="alert"><strong>We could not complete the payment. Try again.</strong></div>}
+        {failed && <div className="alert" role="alert"><strong>{t('We could not complete the payment. Try again.')}</strong></div>}
 
         <div className="checkout-grid">
           <form className="checkout-form" onSubmit={(e) => { e.preventDefault(); pay() }} noValidate>
@@ -127,34 +128,34 @@ function BookingForm({ photographer: ph, search, user }) {
               <div className="form-card-title">
                 <span>1</span>
                 <div>
-                  <h2>Shoot details</h2>
-                  <p>Where should {ph.firstName} meet you?</p>
+                  <h2>{t('Shoot details')}</h2>
+                  <p>{t('Where should {name} meet you?', { name: ph.firstName })}</p>
                 </div>
               </div>
-              <Field label="Exact meeting place" error={err('address')}>
-                <input value={f.address} onChange={(e) => set('address', e.target.value)} placeholder="Street, building, or landmark" />
+              <Field label={t('Exact meeting place')} error={err('address')}>
+                <input value={f.address} onChange={(e) => set('address', e.target.value)} placeholder={t('Street, building, or landmark')} />
               </Field>
-              <Field label="Anything the photographer should know" note="Optional">
-                <textarea rows={4} value={f.note} onChange={(e) => set('note', e.target.value)} placeholder={`Tell ${ph.firstName} about the mood, people, or any special requests…`} />
+              <Field label={t('Anything the photographer should know')} note={t('Optional')}>
+                <textarea rows={4} value={f.note} onChange={(e) => set('note', e.target.value)} placeholder={t('Tell {name} about the mood, people, or any special requests…', { name: ph.firstName })} />
               </Field>
             </section>
             <section className="form-card">
               <div className="form-card-title">
                 <span>2</span>
                 <div>
-                  <h2>Your contact details</h2>
-                  <p>Filled in from your account.</p>
+                  <h2>{t('Your contact details')}</h2>
+                  <p>{t('Filled in from your account.')}</p>
                 </div>
               </div>
               <div className="two-col">
-                <Field label="Name" error={err('name')}><input value={f.name} onChange={(e) => set('name', e.target.value)} autoComplete="name" /></Field>
-                <Field label="Phone" error={err('phone')}><input type="tel" value={f.phone} onChange={(e) => set('phone', e.target.value)} autoComplete="tel" /></Field>
+                <Field label={t('Name')} error={err('name')}><input value={f.name} onChange={(e) => set('name', e.target.value)} autoComplete="name" /></Field>
+                <Field label={t('Phone')} error={err('phone')}><input type="tel" value={f.phone} onChange={(e) => set('phone', e.target.value)} autoComplete="tel" /></Field>
               </div>
-              <Field label="Email" error={err('email')}><input type="email" value={f.email} onChange={(e) => set('email', e.target.value)} autoComplete="email" /></Field>
+              <Field label={t('Email')} error={err('email')}><input type="email" value={f.email} onChange={(e) => set('email', e.target.value)} autoComplete="email" /></Field>
             </section>
             <label className={`consent ${err('terms') ? 'has-error' : ''}`}>
               <input type="checkbox" checked={f.terms} onChange={(e) => set('terms', e.target.checked)} />
-              <span>I agree to the <Link to="/terms" target="_blank">terms</Link> and the cancellation rules</span>
+              <span>{t('I agree to the')} <Link to="/terms" target="_blank">{t('terms')}</Link> {t('and the cancellation rules')}</span>
             </label>
             {err('terms') && <em className="field-error">{err('terms')}</em>}
             <button className="btn btn-primary pay-mobile" type="submit">{payText}</button>
@@ -164,7 +165,7 @@ function BookingForm({ photographer: ph, search, user }) {
             <div className="order-person">
               <Photo photographer={ph} width={160} />
               <div>
-                <span>Your photographer</span>
+                <span>{t('Your photographer')}</span>
                 <h3>{ph.firstName} {ph.lastName}</h3>
                 <Rating value={ph.rating} />
               </div>
@@ -172,27 +173,27 @@ function BookingForm({ photographer: ph, search, user }) {
             <div className="order-details">
               <span><Icon name="camera" size={18} /><b>{styleName(style)}</b></span>
               <span><Icon name="calendar" size={18} /><b>{formatDate(search.date, { weekday: 'long', day: 'numeric', month: 'long' })}</b></span>
-              <span><Icon name="clock" size={18} /><b>{search.time}–{toHHMM(start + duration)} · {duration} min</b></span>
-              <span><Icon name="location" size={18} /><b>{areaName(search.area)}, Kyiv</b></span>
+              <span><Icon name="clock" size={18} /><b>{search.time}–{toHHMM(start + duration)} · {t('{n} min', { n: duration })}</b></span>
+              <span><Icon name="location" size={18} /><b>{areaName(search.area)}, {t('Kyiv')}</b></span>
             </div>
-            <Link className="text-link" to={changeTime}>Change time</Link>
+            <Link className="text-link" to={changeTime}>{t('Change time')}</Link>
             <div className="price-lines">
-              <div><span>{uah(ph.pricePerHour)}/h × {duration} min / 60</span><b>{uah(total)}</b></div>
-              <div className="deposit"><span>Pay now: 30% deposit</span><b>{uah(deposit)}</b></div>
-              <div><span>Pay after the shoot: 70%</span><b>{uah(total - deposit)}</b></div>
+              <div><span>{t('{price}/h × {d} min / 60', { price: uah(ph.pricePerHour), d: duration })}</span><b>{uah(total)}</b></div>
+              <div className="deposit"><span>{t('Pay now: 30% deposit')}</span><b>{uah(deposit)}</b></div>
+              <div><span>{t('Pay after the shoot: 70%')}</span><b>{uah(total - deposit)}</b></div>
             </div>
             <button className="btn btn-primary" onClick={pay}>{payText}</button>
-            <small><Icon name="shield" size={15} /> The deposit goes to the photographer only after the shoot</small>
+            <small><Icon name="shield" size={15} /> {t('The deposit goes to the photographer only after the shoot')}</small>
           </aside>
         </div>
       </div>
 
       {paying && (
-        <Modal title="Demo payment" icon="shield" onClose={() => !busy && setPaying(false)}>
-          <p>Demo payment, no money is charged.</p>
-          <div className="modal-total"><span>Deposit</span><strong>{uah(deposit)}</strong></div>
-          <button className="btn btn-primary" disabled={busy} onClick={confirmPayment}>{busy ? 'Checking the time…' : 'Confirm payment'}</button>
-          <button className="btn btn-ghost" disabled={busy} onClick={() => setPaying(false)}>Cancel</button>
+        <Modal title={t('Demo payment')} icon="shield" onClose={() => !busy && setPaying(false)}>
+          <p>{t('Demo payment, no money is charged.')}</p>
+          <div className="modal-total"><span>{t('Deposit')}</span><strong>{uah(deposit)}</strong></div>
+          <button className="btn btn-primary" disabled={busy} onClick={confirmPayment}>{busy ? t('Checking the time…') : t('Confirm payment')}</button>
+          <button className="btn btn-ghost" disabled={busy} onClick={() => setPaying(false)}>{t('Cancel')}</button>
         </Modal>
       )}
     </main>

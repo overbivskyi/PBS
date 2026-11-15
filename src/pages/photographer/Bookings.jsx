@@ -5,6 +5,7 @@ import { useAsync, useStoreVersion } from '../../lib/hooks.js'
 import { getPhotographer, listEvents, isCalendarConnected, setCalendarConnected, areaName, styleName } from '../../lib/store.js'
 import { addDays, weekStart, formatDate, formatDuration, toHHMM, uah, DAY_START, DAY_END } from '../../lib/time.js'
 import { PhotographerGate, ProPage, ProLoading, demoToday } from './common.jsx'
+import { t } from '../../lib/i18n.js'
 
 export default function Bookings() {
   return <PhotographerGate>{(id) => <BookingsPage id={id} />}</PhotographerGate>
@@ -15,7 +16,7 @@ function BookingsPage({ id }) {
   const data = useAsync(async () => ({ p: await getPhotographer(id), events: await listEvents(id) }), [id, version])
   const [from, setFrom] = useState(weekStart(demoToday()))
 
-  if (data.status !== 'ready') return <ProLoading state={data} text="We could not load your bookings. Try again." />
+  if (data.status !== 'ready') return <ProLoading state={data} text={t('We could not load your bookings. Try again.')} />
   const { p, events } = data.data
   const connected = isCalendarConnected(id)
   const today = demoToday()
@@ -26,39 +27,39 @@ function BookingsPage({ id }) {
 
   return (
     <ProPage
-      title="Bookings & calendar"
+      title={t('Bookings & calendar')}
       subtitle={`${p.firstName} ${p.lastName} · ${formatDate(from, { day: 'numeric', month: 'short' })} – ${formatDate(addDays(from, 6), { day: 'numeric', month: 'short', year: 'numeric' })}`}
       aside={
         connected ? (
           <div className="connected">
             <span />
-            <div><strong>Google Calendar connected</strong><small>Demo calendar</small></div>
+            <div><strong>{t('Google Calendar connected')}</strong><small>{t('Demo calendar')}</small></div>
           </div>
         ) : (
-          <button className="btn btn-secondary" onClick={() => setCalendarConnected(id, true)}><Icon name="calendar" size={18} /> Connect Google Calendar</button>
+          <button className="btn btn-secondary" onClick={() => setCalendarConnected(id, true)}><Icon name="calendar" size={18} /> {t('Connect Google Calendar')}</button>
         )
       }
     >
       <div className="week-summary">
-        <div><span>Bookings this week</span><strong>{weekBookings.length}</strong></div>
-        <div><span>Minutes booked</span><strong>{minutes} min</strong></div>
-        <div><span>Deposits received</span><strong>{uah(weekBookings.reduce((s, e) => s + e.deposit, 0))}</strong></div>
-        <div><span>Expected after shoots</span><strong>{uah(weekBookings.reduce((s, e) => s + e.total - e.deposit, 0))}</strong></div>
+        <div><span>{t('Bookings this week')}</span><strong>{weekBookings.length}</strong></div>
+        <div><span>{t('Minutes booked')}</span><strong>{t('{n} min', { n: minutes })}</strong></div>
+        <div><span>{t('Deposits received')}</span><strong>{uah(weekBookings.reduce((s, e) => s + e.deposit, 0))}</strong></div>
+        <div><span>{t('Expected after shoots')}</span><strong>{uah(weekBookings.reduce((s, e) => s + e.total - e.deposit, 0))}</strong></div>
       </div>
 
       <section className="calendar-card">
         <div className="calendar-top">
           <div className="calendar-title">
-            <h2>Your week</h2>
+            <h2>{t('Your week')}</h2>
             <div className="week-arrows">
-              <button aria-label="Previous week" onClick={() => setFrom(addDays(from, -7))}><Icon name="arrow" /></button>
-              <button aria-label="Next week" onClick={() => setFrom(addDays(from, 7))}><Icon name="arrow" /></button>
+              <button aria-label={t('Previous week')} onClick={() => setFrom(addDays(from, -7))}><Icon name="arrow" /></button>
+              <button aria-label={t('Next week')} onClick={() => setFrom(addDays(from, 7))}><Icon name="arrow" /></button>
             </div>
           </div>
           <div className="legend">
-            <span><i className="primary-dot" />Booking from the service</span>
-            <span><i />Other calendar event</span>
-            <span><i className="break-dot" />Break after a shoot</span>
+            <span><i className="primary-dot" />{t('Booking from the service')}</span>
+            <span><i />{t('Other calendar event')}</span>
+            <span><i className="break-dot" />{t('Break after a shoot')}</span>
           </div>
         </div>
         <WeekCalendar from={from} events={week} breakMin={p.rules.breakMin} onOpen={(e) => document.getElementById(`row-${e.id}`)?.setAttribute('open', '')} />
@@ -67,14 +68,14 @@ function BookingsPage({ id }) {
       <section className="upcoming">
         <div className="section-top">
           <div>
-            <span className="kicker">Next up</span>
-            <h2>Upcoming bookings</h2>
+            <span className="kicker">{t('Next up')}</span>
+            <h2>{t('Upcoming bookings')}</h2>
           </div>
         </div>
         {upcoming.length === 0 ? (
           <Empty>
-            <p>No bookings yet. Clients see your free times as soon as your rules are set.</p>
-            <Link className="btn btn-primary" to="/photographer/rules">Set my rules</Link>
+            <p>{t('No bookings yet. Clients see your free times as soon as your rules are set.')}</p>
+            <Link className="btn btn-primary" to="/photographer/rules">{t('Set my rules')}</Link>
           </Empty>
         ) : (
           upcoming.map((b) => <BookingRow key={b.id} b={b} />)
@@ -92,19 +93,19 @@ function BookingRow({ b }) {
         <span className="booking-date">{day}<small>{month}</small></span>
         <div>
           <strong>{b.clientName} · {styleName(b.style)}</strong>
-          <span>{formatDate(b.date)} · {toHHMM(b.start)}–{toHHMM(b.start + b.duration)} · {b.duration} min</span>
+          <span>{formatDate(b.date)} · {toHHMM(b.start)}–{toHHMM(b.start + b.duration)} · {t('{n} min', { n: b.duration })}</span>
         </div>
         <div className="booking-location"><Icon name="location" size={17} />{areaName(b.area)}</div>
-        <span className="status">Confirmed, deposit paid</span>
+        <span className="status">{t('Confirmed, deposit paid')}</span>
         <strong>{uah(b.deposit)}</strong>
         <Icon name="chevron" />
       </summary>
       <div className="booking-detail">
-        <p><b>Booking:</b> {b.id.toUpperCase()}</p>
-        <p><b>Client:</b> {b.clientFullName ?? b.clientName}{b.clientPhone ? ` · ${b.clientPhone}` : ''}</p>
-        <p><b>Address:</b> {b.address}, {areaName(b.area)}</p>
-        <p><b>Deposit paid:</b> {uah(b.deposit)} · <b>Left to pay:</b> {uah(b.total - b.deposit)}</p>
-        <p><b>Client note:</b> {b.note || '—'}</p>
+        <p><b>{t('Booking:')}</b> {b.id.toUpperCase()}</p>
+        <p><b>{t('Client:')}</b> {b.clientFullName ?? b.clientName}{b.clientPhone ? ` · ${b.clientPhone}` : ''}</p>
+        <p><b>{t('Address:')}</b> {b.address}, {areaName(b.area)}</p>
+        <p><b>{t('Deposit paid:')}</b> {uah(b.deposit)} · <b>{t('Left to pay:')}</b> {uah(b.total - b.deposit)}</p>
+        <p><b>{t('Client note:')}</b> {b.note || '—'}</p>
       </div>
     </details>
   )

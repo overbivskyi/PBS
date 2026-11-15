@@ -2831,3 +2831,12 @@ button.fit-score { text-align: right; }
 @media (max-width: 640px) {
   .results-head .search-form { display: grid; }
 }
+
+/* language switch */
+.lang-switch { display: flex; padding: 3px; border-radius: 10px; background: var(--surface-alt); }
+.lang-switch button { padding: 6px 8px; border-radius: 7px; color: var(--muted); font-size: 11px; font-weight: 600; }
+.lang-switch button.active { background: white; color: var(--primary); box-shadow: 0 1px 3px rgba(27, 30, 40, 0.1); }
+.auth-logo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+@media (max-width: 640px) {
+  .lang-switch button { padding: 5px 6px; font-size: 9px; }
+}

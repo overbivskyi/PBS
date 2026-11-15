@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import Landing from './pages/Landing.jsx'
@@ -11,12 +12,23 @@ import Bookings from './pages/photographer/Bookings.jsx'
 import Rules from './pages/photographer/Rules.jsx'
 import ProfileSettings from './pages/photographer/ProfileSettings.jsx'
 import { Empty } from './components/ui.jsx'
+import { t, getLang } from './lib/i18n.js'
 
 // HashRouter: GitHub Pages serves static files only, so routes live after the #.
 export default function App() {
+  const [lang, setLangState] = useState(getLang())
+  useEffect(() => {
+    document.title = `Snaply · ${t('Book a photographer')}`
+    const on = () => {
+      setLangState(getLang())
+      document.title = `Snaply · ${t('Book a photographer')}`
+    }
+    window.addEventListener('pbs-lang', on)
+    return () => window.removeEventListener('pbs-lang', on)
+  }, [])
   return (
     <HashRouter>
-      <Routes>
+      <Routes key={lang}>
         <Route element={<Layout />}>
           <Route index element={<Landing />} />
           <Route path="search" element={<Results />} />
@@ -28,7 +40,7 @@ export default function App() {
           <Route path="confirmation/:id" element={<Confirmation />} />
           <Route path="terms" element={<TextPage kind="terms" />} />
           <Route path="privacy" element={<TextPage kind="privacy" />} />
-          <Route path="*" element={<main className="page-alt"><div className="container narrow-page"><Empty>Page not found.</Empty></div></main>} />
+          <Route path="*" element={<main className="page-alt"><div className="container narrow-page"><Empty>{t('Page not found.')}</Empty></div></main>} />
         </Route>
         {/* sign-up and login have no header or footer, as in the design */}
         <Route path="signup" element={<SignUp />} />

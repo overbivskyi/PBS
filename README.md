@@ -16,6 +16,14 @@ The look follows the team's Figma Make file "Design an App" (Snaply): its styles
 with an added section at the end for states the design does not show (errors, loading, empty lists, blocked times).
 Demo photos are the design's Unsplash photos (`src/lib/photos.js`); photos uploaded in Profile settings replace them.
 
+## Languages
+
+English (default) and Ukrainian, switched with EN / УКР in the header. A link with `?lang=uk`
+(for example `https://overbivskyi.github.io/PBS/?lang=uk`) opens the Ukrainian version.
+All texts are in `src/lib/i18n.js`: the English text is the key, the Ukrainian text is the value,
+and the generated demo data (names, areas, reviews) is translated there too.
+`npm run check:i18n` lists any text without a Ukrainian version (the deploy runs it too).
+
 ## Where the data lives
 
 | What | Where |

@@ -1,5 +1,6 @@
 import { styleName } from '../lib/store.js'
 import { avatarSrc } from '../lib/photos.js'
+import { t, plural } from '../lib/i18n.js'
 
 // Line icons from the Figma design.
 const PATHS = {
@@ -36,12 +37,12 @@ export function Photo({ photographer, width, className = '', alt }) {
 }
 
 export function Rating({ value, shoots }) {
-  if (!value) return <span className="rating"><span className="new-badge">New</span></span>
+  if (!value) return <span className="rating"><span className="new-badge">{t('New')}</span></span>
   return (
     <span className="rating">
       <span className="star"><Icon name="star" size={15} /></span>
       <strong>{value.toFixed(1)}</strong>
-      {shoots != null && <span>· {shoots} shoots</span>}
+      {shoots != null && <span>· {plural(shoots, ['{n} shoot', '{n} shoots'], ['{n} зйомка', '{n} зйомки', '{n} зйомок'])}</span>}
     </span>
   )
 }
@@ -64,7 +65,7 @@ export function ErrorState({ text, onRetry }) {
   return (
     <div className="state state-error" role="alert">
       <p>{text}</p>
-      {onRetry && <button className="btn btn-secondary" onClick={onRetry}>Try again</button>}
+      {onRetry && <button className="btn btn-secondary" onClick={onRetry}>{t('Try again')}</button>}
     </div>
   )
 }
@@ -89,7 +90,7 @@ export function Modal({ title, icon, children, onClose }) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Close"><Icon name="close" /></button>
+        <button className="modal-close" onClick={onClose} aria-label={t('Close')}><Icon name="close" /></button>
         {icon && <span className="modal-icon"><Icon name={icon} size={28} /></span>}
         <h2>{title}</h2>
         {children}

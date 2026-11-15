@@ -6,6 +6,7 @@ import { Icon, Loading, ErrorState, Empty } from '../components/ui.jsx'
 import { useAsync, useSearchState, isCompleteSearch, searchToQuery, toEngineSearch } from '../lib/hooks.js'
 import { search as runSearch, areaName, styleName } from '../lib/store.js'
 import { formatDate } from '../lib/time.js'
+import { t, plural } from '../lib/i18n.js'
 
 const SORTS = {
   fit: (a, b) => b.score - a.score,
@@ -28,35 +29,35 @@ export default function Results() {
   return (
     <main className="page-alt">
       <section className="container results-head">
-        <Link className="back-link" to="/"><Icon name="arrow" size={18} /> Back to home</Link>
-        <h1>Photographers for your shoot</h1>
+        <Link className="back-link" to="/"><Icon name="arrow" size={18} /> {t('Back to home')}</Link>
+        <h1>{t('Photographers for your shoot')}</h1>
         {complete && (
           <p>
-            {s.styles.map(styleName).join(', ')} in {areaName(s.area)} · {formatDate(s.date, { day: 'numeric', month: 'short' })} at {s.time} · {s.duration} minutes
+            {t('{styles} in {area} · {date} at {time} · {duration} minutes', { styles: s.styles.map(styleName).join(', '), area: areaName(s.area), date: formatDate(s.date, { day: 'numeric', month: 'short' }), time: s.time, duration: s.duration })}
           </p>
         )}
-        <SearchForm key={key} ref={dateRef} initial={s} compact submitText="Update results" onSubmit={(x) => navigate(`/search?${searchToQuery(x)}`)} />
+        <SearchForm key={key} ref={dateRef} initial={s} compact submitText={t('Update results')} onSubmit={(x) => navigate(`/search?${searchToQuery(x)}`)} />
       </section>
 
       <section className="container results-content">
-        {!complete && <Empty>Fill in the search to see photographers who are free at your time.</Empty>}
-        {complete && res.status === 'loading' && <Loading text="Finding photographers…" />}
-        {complete && res.status === 'error' && <ErrorState text="We could not load the results. Try again." onRetry={res.retry} />}
+        {!complete && <Empty>{t('Fill in the search to see photographers who are free at your time.')}</Empty>}
+        {complete && res.status === 'loading' && <Loading text={t('Finding photographers…')} />}
+        {complete && res.status === 'error' && <ErrorState text={t('We could not load the results. Try again.')} onRetry={res.retry} />}
 
         {complete && res.status === 'ready' && res.data && (
           <>
             <div className="results-toolbar">
               <div>
-                <strong>{res.data.count} {res.data.count === 1 ? 'photographer fits' : 'photographers fit'}</strong> your search
-                {res.data.count > 0 && <span>All free at {s.time} and within budget</span>}
+                <strong>{plural(res.data.count, ['{n} photographer fits', '{n} photographers fit'], ['{n} фотограф підходить', '{n} фотографи підходять', '{n} фотографів підходять'])}</strong> {t('your search')}
+                {res.data.count > 0 && <span>{t('All free at {time} and within budget', { time: s.time })}</span>}
               </div>
               {res.data.count > 2 && (
                 <label>
-                  Sort by
+                  {t('Sort by')}
                   <select value={sort} onChange={(e) => setSort(e.target.value)}>
-                    <option value="fit">Fit score</option>
-                    <option value="price">Price</option>
-                    <option value="rating">Rating</option>
+                    <option value="fit">{t('Fit score')}</option>
+                    <option value="price">{t('Price')}</option>
+                    <option value="rating">{t('Rating')}</option>
                   </select>
                 </label>
               )}
@@ -64,9 +65,9 @@ export default function Results() {
 
             {res.data.count === 0 && (
               <Empty>
-                <p>No photographer is free at this time.</p>
+                <p>{t('No photographer is free at this time.')}</p>
                 {res.data.alternatives.length === 0 && (
-                  <button className="btn btn-secondary" onClick={() => dateRef.current?.focus()}>Change the date</button>
+                  <button className="btn btn-secondary" onClick={() => dateRef.current?.focus()}>{t('Change the date')}</button>
                 )}
               </Empty>
             )}
@@ -82,10 +83,10 @@ export default function Results() {
               <>
                 <div className="close-heading">
                   <div>
-                    <span className="kicker">More options</span>
-                    <h2>Close alternatives</h2>
+                    <span className="kicker">{t('More options')}</span>
+                    <h2>{t('Close alternatives')}</h2>
                   </div>
-                  <p>Almost a fit. Each card shows the one thing that differs from your search.</p>
+                  <p>{t('Almost a fit. Each card shows the one thing that differs from your search.')}</p>
                 </div>
                 <div className="result-list alternatives">
                   {res.data.alternatives.map((r) => (
