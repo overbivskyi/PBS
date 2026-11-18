@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useSession, useAsync } from '../lib/hooks.js'
-import { logOut, setView, listPhotographers, resetDemo } from '../lib/store.js'
+import { logOut, setView, listPhotographers, resetDemo, usingServer } from '../lib/store.js'
 import { Icon } from './ui.jsx'
 import { getLang, setLang } from '../lib/i18n.js'
 import { t } from '../lib/i18n.js'
@@ -33,7 +33,7 @@ export default function Layout() {
 }
 
 function Header() {
-  const { user, view, photographerId } = useSession()
+  const { user, view, photographerId, canSwitch } = useSession()
   const [open, setOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const location = useLocation()
@@ -63,7 +63,7 @@ function Header() {
         </nav>
         <div className="nav-actions">
           <LangSwitch />
-          {!user && <RoleSwitch view={view} />}
+          {canSwitch && <RoleSwitch view={view} />}
           {user ? (
             <div className="account">
               <button className="avatar-button" onClick={() => setAccountOpen((o) => !o)} aria-expanded={accountOpen}>
@@ -155,17 +155,19 @@ function Footer() {
         <div>
           <Link to="/terms">{t('Terms of service')}</Link>
           <Link to="/privacy">{t('Privacy policy')}</Link>
-          <button
-            className="footer-reset"
-            onClick={() => {
-              if (confirm(t('Delete all accounts, bookings and edits made in this browser?'))) {
-                resetDemo()
-                navigate('/')
-              }
-            }}
-          >
-            {t('Reset demo data')}
-          </button>
+          {!usingServer && (
+            <button
+              className="footer-reset"
+              onClick={() => {
+                if (confirm(t('Delete all accounts, bookings and edits made in this browser?'))) {
+                  resetDemo()
+                  navigate('/')
+                }
+              }}
+            >
+              {t('Reset demo data')}
+            </button>
+          )}
         </div>
       </div>
     </footer>

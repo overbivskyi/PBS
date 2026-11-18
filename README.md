@@ -24,6 +24,12 @@ All texts are in `src/lib/i18n.js`: the English text is the key, the Ukrainian t
 and the generated demo data (names, areas, reviews) is translated there too.
 `npm run check:i18n` lists any text without a Ukrainian version (the deploy runs it too).
 
+## Server
+
+The API and database for real testers live in `server/` (Node + SQLite, no packages).
+How to run it on the team's server behind Tailscale Funnel and connect the site: [docs/server.md](docs/server.md).
+Locally: `npm run server`, then `VITE_API_URL=http://localhost:8787 npm run dev`.
+
 ## Where the data lives
 
 | What | Where |

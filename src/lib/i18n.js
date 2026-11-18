@@ -39,6 +39,11 @@ export function setLang(next) {
   window.dispatchEvent(new Event('pbs-lang'))
 }
 
+// Server: sets the language for one request (no browser storage or events).
+export function setRequestLang(next) {
+  lang = LANGS.includes(next) ? next : 'en'
+}
+
 export function t(en, vars) {
   let s = lang === 'uk' ? (UK[en] ?? en) : en
   if (vars) for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, v)
@@ -468,6 +473,18 @@ const UK = {
   'Photographer at work': 'Фотограф за роботою',
   'Large portfolio view': 'Фото з портфоліо великим планом',
   Profile: 'Профіль',
+
+  // server messages
+  'The server is not available. Try again.': 'Сервер недоступний. Спробуйте ще раз.',
+  'Log in to continue': 'Увійдіть, щоб продовжити',
+  'You cannot change this photographer': 'Ви не можете змінювати цього фотографа',
+  'Not your booking': 'Це не ваше бронювання',
+  'Booking not found': 'Бронювання не знайдено',
+  'Photographer not found': 'Фотографа не знайдено',
+  'Rules are not valid': 'Правила заповнено неправильно',
+  'Add at least 3 photos': 'Додайте щонайменше 3 фото',
+  'Request is too large': 'Запит завеликий',
+  'Server error': 'Помилка сервера',
 
   // matching reasons (spec section 6)
   'Busy: another shoot at this time': 'Зайнято: інша зйомка в цей час',

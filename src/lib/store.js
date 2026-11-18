@@ -1,8 +1,8 @@
-// Data layer for the demo.
-// The generated data comes from src/data/*.json (in git). Anything created in the demo
-// (accounts, bookings, edited rules and profiles) is kept in this browser's localStorage.
-// Every function is async, so this file can later be swapped for calls to the team's server
-// without changing the pages.
+// Data layer for the demo. It works in two modes:
+// - Server mode (VITE_API_URL is set at build time): everything goes to the team's API (server/).
+// - Browser mode (no VITE_API_URL): the generated data comes from src/data/*.json and anything
+//   created in the demo is kept in this browser's localStorage.
+// The pages call the same functions in both modes.
 
 import areas from '../data/areas.json'
 import styles from '../data/styles.json'
@@ -13,7 +13,10 @@ import seedEvents from '../data/events.json'
 import seedReviews from '../data/reviews.json'
 import { rankSearch, daySlots, checkSlot } from './matching.js'
 import { addDays, toMin } from './time.js'
-import { d } from './i18n.js'
+import { d, getLang } from './i18n.js'
+
+const API = (import.meta.env?.VITE_API_URL || '').replace(/\/$/, '')
+export const usingServer = !!API
 
 const KEY = 'pbs.v1.'
 const LATENCY = 120
@@ -40,6 +43,37 @@ export class StoreError extends Error {
   }
 }
 
+// ---------- server calls ----------
+
+async function call(method, path, body) {
+  const session = read('apiSession', null)
+  let res
+  try {
+    res = await fetch(API + path, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Lang': getLang(),
+        ...(session ? { Authorization: `Bearer ${session.token}` } : {}),
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    })
+  } catch {
+    throw new StoreError('network', 'The server is not available. Try again.')
+  }
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    if (res.status === 401 && session) write('apiSession', null) // expired session
+    const { code, message, ...extra } = data
+    throw new StoreError(code ?? 'server_error', message ?? 'Server error', extra)
+  }
+  return data
+}
+const changed = (v) => {
+  window.dispatchEvent(new Event('pbs-store'))
+  return v
+}
+
 // ---------- catalog (sync, static) ----------
 
 export const catalog = { areas, styles, travel, meta }
@@ -62,6 +96,10 @@ function localizePhotographer(p) {
 function localizeEvent(e) {
   return { ...e, clientName: d(e.clientName), title: d(e.title), address: d(e.address) }
 }
+// server mode: only the generated data is translated
+const fromServer = (p) => (p.userType === 'generated' ? localizePhotographer(p) : p)
+const eventFromServer = (e) => (e.source === 'generated' ? localizeEvent(e) : e)
+const resultFromServer = (r) => ({ ...r, photographer: fromServer(r.photographer) })
 
 // ---------- photographers ----------
 
@@ -80,26 +118,34 @@ function eventsSync(photographerId) {
 }
 
 export async function listPhotographers() {
+  if (API) return (await call('GET', '/api/photographers')).map(fromServer)
   return wait(allPhotographersSync())
 }
 
 export async function getPhotographer(id) {
+  if (API) return fromServer(await call('GET', `/api/photographers/${id}`))
   const p = allPhotographersSync().find((x) => x.id === id)
   if (!p) throw new StoreError('not_found', 'Photographer not found')
   return wait(p)
 }
 
 export async function getReviews(photographerId) {
+  if (API) return (await call('GET', `/api/photographers/${photographerId}/reviews`)).map((r) => ({ ...r, clientName: d(r.clientName), text: d(r.text) }))
   return wait(seedReviews.filter((r) => r.photographerId === photographerId).slice(0, 5).map((r) => ({ ...r, clientName: d(r.clientName), text: d(r.text) })))
 }
 
 export async function listEvents(photographerId) {
+  if (API) return (await call('GET', `/api/photographers/${photographerId}/events`)).map(eventFromServer)
   return wait(eventsSync(photographerId).sort((a, b) => a.date.localeCompare(b.date) || a.start - b.start))
 }
 
 // ---------- search and availability ----------
 
 export async function search(params) {
+  if (API) {
+    const r = await call('POST', '/api/search', params)
+    return { ...r, best: r.best && resultFromServer(r.best), others: r.others.map(resultFromServer), alternatives: r.alternatives.map(resultFromServer) }
+  }
   const photographers = allPhotographersSync().filter((p) => p.profileDone && p.rulesDone)
   return wait(rankSearch({ photographers, events: eventsSync(), search: params, styles, travel }))
 }
@@ -107,6 +153,7 @@ export async function search(params) {
 // 7 days of start times for the profile calendar.
 // `extra` ('HH:MM') adds one more start time to every day, e.g. the searched time.
 export async function weekAvailability({ photographerId, from, duration, area, step = 30, extra = null }) {
+  if (API) return call('POST', `/api/photographers/${photographerId}/week`, { from, duration, area, step, extra })
   const p = allPhotographersSync().find((x) => x.id === photographerId)
   const events = eventsSync(photographerId)
   const days = Array.from({ length: 7 }, (_, i) => {
@@ -124,6 +171,7 @@ export async function weekAvailability({ photographerId, from, duration, area, s
 }
 
 export async function nearestFree({ photographerId, date, start, duration, area, count = 3 }) {
+  if (API) return call('POST', `/api/photographers/${photographerId}/nearest`, { date, start, duration, area, count })
   const p = allPhotographersSync().find((x) => x.id === photographerId)
   const events = eventsSync(photographerId).filter((e) => e.date === date)
   return wait(
@@ -138,6 +186,7 @@ export async function nearestFree({ photographerId, date, start, duration, area,
 // ---------- bookings ----------
 
 export async function createBooking(input) {
+  if (API) return changed(await call('POST', '/api/bookings', input))
   const p = allPhotographersSync().find((x) => x.id === input.photographerId)
   const events = eventsSync(p.id).filter((e) => e.date === input.date)
   // check the slot again right before payment (spec 4.4)
@@ -161,6 +210,7 @@ export async function createBooking(input) {
 }
 
 export async function getBooking(id) {
+  if (API) return eventFromServer(await call('GET', `/api/bookings/${id}`))
   const b = eventsSync().find((e) => e.id === id)
   if (!b) throw new StoreError('not_found', 'Booking not found')
   return wait(b)
@@ -176,16 +226,19 @@ function saveOverride(id, patch) {
 }
 
 export async function saveRules(id, { rules, pricePerHour, styles: chosen, homeArea }) {
+  if (API) return changed(await call('PUT', `/api/photographers/${id}/rules`, { rules, pricePerHour, styles: chosen, homeArea }))
   saveOverride(id, { rules, pricePerHour, styles: chosen, homeArea, rulesDone: true })
   return wait(true)
 }
 
 export async function saveProfile(id, profile) {
+  if (API) return changed(await call('PUT', `/api/photographers/${id}/profile`, profile))
   saveOverride(id, { ...profile, profileDone: true })
   return wait(true)
 }
 
 export async function setCalendarConnected(id, connected) {
+  if (API) return changed(await call('PUT', `/api/photographers/${id}/calendar`, { connected }))
   const cal = read('calendar', {})
   write('calendar', { ...cal, [id]: connected })
   return wait(connected)
@@ -193,7 +246,8 @@ export async function setCalendarConnected(id, connected) {
 export const isCalendarConnected = (id) => !!read('calendar', {})[id] || id.startsWith('p')
 
 // ---------- accounts ----------
-// Demo only: accounts live in this browser. Generated users cannot log in.
+// Browser mode: accounts live in this browser. Server mode: the API keeps them and returns a session token.
+// Generated users cannot log in.
 
 async function hash(text) {
   const data = new TextEncoder().encode('pbs-demo:' + text)
@@ -202,11 +256,17 @@ async function hash(text) {
 }
 
 export function currentUser() {
+  if (API) return read('apiSession', null)?.user ?? null
   const session = read('session', null)
   return session ? read('users', []).find((u) => u.id === session.userId) ?? null : null
 }
 
 export async function signUp({ role, firstName, lastName, email, phone, password }) {
+  if (API) {
+    const { token, user } = await call('POST', '/api/auth/signup', { role, firstName, lastName, email, phone, password })
+    write('apiSession', { token, user })
+    return user
+  }
   const users = read('users', [])
   if (users.some((u) => u.email.toLowerCase() === email.toLowerCase()))
     throw new StoreError('email_used', 'This email already has an account')
@@ -229,6 +289,11 @@ export async function signUp({ role, firstName, lastName, email, phone, password
 }
 
 export async function logIn({ email, password }) {
+  if (API) {
+    const { token, user } = await call('POST', '/api/auth/login', { email, password })
+    write('apiSession', { token, user })
+    return user
+  }
   const users = read('users', [])
   const h = await hash(password)
   const user = users.find((u) => u.email.toLowerCase() === email.toLowerCase() && u.passwordHash === h)
@@ -238,6 +303,11 @@ export async function logIn({ email, password }) {
 }
 
 export function logOut() {
+  if (API) {
+    call('POST', '/api/auth/logout').catch(() => {})
+    write('apiSession', null)
+    return
+  }
   write('session', null)
 }
 
@@ -250,7 +320,7 @@ export function setView(view) {
   write('view', { ...getView(), ...view })
 }
 
-// Clears everything created in this browser.
+// Clears everything created in this browser (in server mode: only the session and the team view).
 export function resetDemo() {
   Object.keys(localStorage).filter((k) => k.startsWith(KEY)).forEach((k) => localStorage.removeItem(k))
   window.dispatchEvent(new Event('pbs-store'))

@@ -10,7 +10,11 @@
     "preview": "vite preview",
     "data": "node scripts/generate-demo-data.mjs",
     "check": "node scripts/check-scenario.mjs",
-    "check:i18n": "node scripts/check-i18n.mjs"
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "server": "node server/index.js",
+    "server:seed": "node server/admin.js seed",
+    "server:team": "node server/admin.js team",
+    "server:testers": "node server/admin.js testers"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -27,5 +31,8 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "vite": "^6.3.5"
+  },
+  "engines": {
+    "node": ">=22.13"
   }
 }

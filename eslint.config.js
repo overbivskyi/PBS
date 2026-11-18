@@ -30,4 +30,9 @@ export default [
       ],
     },
   },
+  // the API server and the scripts run in Node
+  {
+    files: ['server/**/*.js', 'scripts/**/*.mjs'],
+    languageOptions: { globals: globals.node },
+  },
 ]

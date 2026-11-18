@@ -1,8 +1,11 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { currentUser, getView } from './store.js'
-import { catalog } from './store.js'
+import { currentUser, getView, usingServer, catalog } from './store.js'
 import { toMin } from './time.js'
+
+// The role switch is a team tool (spec section 3): with the server only team accounts get it;
+// in browser mode everybody who is not logged in gets it.
+export const isTeamViewer = (user) => (usingServer ? user?.role === 'team' : !user)
 
 // Re-renders when anything in the store changes (login, role switch, saves).
 export function useStoreVersion() {
@@ -24,8 +27,9 @@ export function useSession() {
   const user = currentUser()
   const view = getView()
   // The photographer whose pages are shown: the logged-in photographer, or the one picked in the role switch.
-  const photographerId = user?.role === 'photographer' ? user.photographerId : view.role === 'photographer' ? view.photographerId : null
-  return { user, view, photographerId }
+  const canSwitch = isTeamViewer(user)
+  const photographerId = user?.role === 'photographer' ? user.photographerId : canSwitch && view.role === 'photographer' ? view.photographerId : null
+  return { user, view, photographerId, canSwitch }
 }
 
 // Loads async data with loading / error states. `deps` re-run the loader.

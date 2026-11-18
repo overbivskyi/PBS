@@ -18,7 +18,7 @@ function BookingsPage({ id }) {
 
   if (data.status !== 'ready') return <ProLoading state={data} text={t('We could not load your bookings. Try again.')} />
   const { p, events } = data.data
-  const connected = isCalendarConnected(id)
+  const connected = p.calendarConnected ?? isCalendarConnected(id)
   const today = demoToday()
   const upcoming = events.filter((e) => e.kind === 'booking' && e.date >= today)
   const week = events.filter((e) => e.date >= from && e.date < addDays(from, 7))
