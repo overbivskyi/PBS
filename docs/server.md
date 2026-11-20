@@ -65,6 +65,23 @@ VITE_API_URL=https://<machine>.<tailnet>.ts.net
 
 The next GitHub Pages build uses the server. Without this file the site runs in browser-only mode.
 
+## Current setup (understairs)
+
+| | |
+|---|---|
+| Server | `understairs` in the tailnet, user `mykola`, code in `~/pbs`, Node in `~/.local/node` |
+| Service | `systemctl --user status pbs-api` (listens on `127.0.0.1:8787`) |
+| Public API | https://understairs.tail3fb1ac.ts.net (Tailscale Funnel → 8787) |
+| Site | `.env.production` points the GitHub Pages build at the public API |
+
+Update the server after pushing new code to `main`:
+
+```bash
+cd ~/pbs && git pull && systemctl --user restart pbs-api
+```
+
+Admin commands on understairs need Node on the PATH: `export PATH=$HOME/.local/node/bin:$PATH`.
+
 ## Admin commands
 
 ```bash
