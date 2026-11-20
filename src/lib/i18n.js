@@ -509,5 +509,8 @@ const UK = {
   'In this demo, accounts and bookings you create are stored only in your own browser. Nothing is sent to a server.':
     'У цьому демо акаунти й бронювання зберігаються лише у вашому браузері. На сервер нічого не надсилається.',
   'You can delete everything with "Reset demo data" in the footer.': 'Усе можна видалити кнопкою «Скинути демо-дані» внизу сторінки.',
+  'Accounts and bookings you create are stored on the team’s demo server. They are used only for this course demo.':
+    'Акаунти й бронювання, які ви створюєте, зберігаються на демо-сервері команди. Вони використовуються лише для цього навчального демо.',
+  'To delete your account and bookings, write to the team.': 'Щоб видалити свій акаунт і бронювання, напишіть команді.',
   'The final text will come from the team (WBS 7.6).': 'Остаточний текст підготує команда (WBS 7.6).',
 }

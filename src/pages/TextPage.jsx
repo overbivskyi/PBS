@@ -1,5 +1,6 @@
 // Simple text pages. Ihor's drafts (WBS 7.4, 7.6) replace this text.
 import { t } from '../lib/i18n.js'
+import { usingServer } from '../lib/store.js'
 
 const TEXTS = {
   terms: {
@@ -13,8 +14,15 @@ const TEXTS = {
   privacy: {
     title: 'Privacy policy',
     body: [
-      'In this demo, accounts and bookings you create are stored only in your own browser. Nothing is sent to a server.',
-      'You can delete everything with "Reset demo data" in the footer.',
+      ...(usingServer
+        ? [
+            'Accounts and bookings you create are stored on the team’s demo server. They are used only for this course demo.',
+            'To delete your account and bookings, write to the team.',
+          ]
+        : [
+            'In this demo, accounts and bookings you create are stored only in your own browser. Nothing is sent to a server.',
+            'You can delete everything with "Reset demo data" in the footer.',
+          ]),
       'The final text will come from the team (WBS 7.6).',
     ],
   },

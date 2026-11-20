@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Field, Icon } from '../components/ui.jsx'
 import { Logo, LangSwitch } from '../components/Layout.jsx'
-import { signUp, logIn } from '../lib/store.js'
+import { signUp, logIn, usingServer } from '../lib/store.js'
 import { PHOTOS, unsplash } from '../lib/photos.js'
 import { EMAIL_RE, PHONE_RE } from './Booking.jsx'
 import { t } from '../lib/i18n.js'
@@ -152,7 +152,7 @@ export function LogIn() {
         <p className="auth-switch">
           <Link to={`/signup${next ? `?next=${encodeURIComponent(next)}` : ''}`}>{t('Create an account')}</Link>
         </p>
-        <p className="auth-note">{t("Demo: accounts are saved only in this browser until the team's server is ready.")}</p>
+        {!usingServer && <p className="auth-note">{t("Demo: accounts are saved only in this browser until the team's server is ready.")}</p>}
       </form>
     </AuthLayout>
   )
