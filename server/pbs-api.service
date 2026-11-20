@@ -1,18 +1,20 @@
-# systemd service for the PBS API.
-# Install: sudo cp server/pbs-api.service /etc/systemd/system/ && sudo systemctl enable --now pbs-api
-# Change User and WorkingDirectory to where the repo is cloned on the server.
+# systemd user service for the PBS API (runs as the logged-in user, no root needed).
+# Install on the server:
+#   mkdir -p ~/.config/systemd/user && cp server/pbs-api.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload && systemctl --user enable --now pbs-api
+# Linger (set by the admin) keeps it running after logout and starts it on boot.
 [Unit]
 Description=PBS demo API
-After=network.target
 
 [Service]
-User=pbs
-WorkingDirectory=/opt/pbs
+WorkingDirectory=%h/pbs
 Environment=PORT=8787
-Environment=DB_PATH=/opt/pbs/server/data/pbs.sqlite
+Environment=HOST=127.0.0.1
+Environment=DB_PATH=%h/pbs/server/data/pbs.sqlite
 Environment=ALLOWED_ORIGINS=https://overbivskyi.github.io
 ExecStart=/usr/bin/env node server/index.js
 Restart=on-failure
+RestartSec=3
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

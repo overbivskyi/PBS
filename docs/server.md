@@ -16,7 +16,7 @@ browser ──HTTPS──> https://<machine>.<tailnet>.ts.net  (Tailscale Funnel
 | `server/index.js` | The API (plain Node, no packages). Uses the same matching logic as the site: `src/lib/matching.js` |
 | `server/db.js` | Database schema (SQLite, built into Node 22.13+) and loading of the demo data from `src/data/*.json` |
 | `server/admin.js` | Admin commands: reload demo data, create team accounts, delete testers' data |
-| `server/pbs-api.service` | systemd service file |
+| `server/pbs-api.service` | systemd user service file |
 
 The database file itself (`server/data/pbs.sqlite`) is **not** in git: it holds testers' personal data.
 
@@ -25,19 +25,23 @@ The database file itself (`server/data/pbs.sqlite`) is **not** in git: it holds 
 Needs Node 22.13 or newer (`node -v`).
 
 ```bash
-git clone https://github.com/overbivskyi/PBS.git /opt/pbs
-cd /opt/pbs
+git clone https://github.com/overbivskyi/PBS.git ~/pbs
+cd ~/pbs
 npm run server:seed          # creates the database and loads the demo data
 npm run server:team -- team@example.com 'a-strong-password' Olha Team   # one per team member
 npm run server               # try it: http://localhost:8787/api/health
 ```
 
-To keep it running, install the service (edit `User` and paths first):
+To keep it running, install it as a user service (no root needed; the admin enables linger once
+with `sudo loginctl enable-linger <user>` so it keeps running after logout and starts on boot):
 
 ```bash
-sudo cp server/pbs-api.service /etc/systemd/system/
-sudo systemctl enable --now pbs-api
+mkdir -p ~/.config/systemd/user && cp server/pbs-api.service ~/.config/systemd/user/
+systemctl --user daemon-reload && systemctl --user enable --now pbs-api
+journalctl --user -u pbs-api -f      # logs
 ```
+
+The API listens only on `127.0.0.1:8787`; Funnel forwards public HTTPS traffic to it.
 
 ## 2. Open it with Tailscale Funnel
 

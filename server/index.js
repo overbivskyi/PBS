@@ -10,6 +10,7 @@ import { setRequestLang, t } from '../src/lib/i18n.js'
 import { addDays, toMin } from '../src/lib/time.js'
 
 const PORT = Number(process.env.PORT || 8787)
+const HOST = process.env.HOST || '127.0.0.1' // only localhost: Tailscale Funnel forwards to it
 const ORIGINS = (process.env.ALLOWED_ORIGINS ||
   'https://overbivskyi.github.io,http://localhost:5173,http://localhost:5174,http://localhost:4173').split(',')
 const MAX_BODY = 12 * 1024 * 1024 // profile photos travel as data URLs
@@ -310,4 +311,4 @@ const server = createServer(async (req, res) => {
   }
 })
 
-server.listen(PORT, () => console.log(`PBS API on http://localhost:${PORT} (db: ${process.env.DB_PATH || 'server/data/pbs.sqlite'})`))
+server.listen(PORT, HOST, () => console.log(`PBS API on http://${HOST}:${PORT} (db: ${process.env.DB_PATH || 'server/data/pbs.sqlite'})`))
