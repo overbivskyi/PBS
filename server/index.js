@@ -265,6 +265,11 @@ function cors(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Lang')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS')
     res.setHeader('Access-Control-Max-Age', '600')
+    // On machines inside the tailnet the API name resolves to a private 100.x address;
+    // Chrome then asks the server to allow a public site to reach the private network.
+    if (req.headers['access-control-request-private-network'] === 'true') {
+      res.setHeader('Access-Control-Allow-Private-Network', 'true')
+    }
   }
 }
 
