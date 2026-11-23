@@ -485,6 +485,8 @@ const UK = {
   'Add at least 3 photos': 'Додайте щонайменше 3 фото',
   'Request is too large': 'Запит завеликий',
   'Server error': 'Помилка сервера',
+  'Too many attempts. Try again later.': 'Забагато спроб. Спробуйте пізніше.',
+  'The photo is too large': 'Фото завелике',
 
   // matching reasons (spec section 6)
   'Busy: another shoot at this time': 'Зайнято: інша зйомка в цей час',

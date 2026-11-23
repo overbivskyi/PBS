@@ -1,0 +1,10 @@
+# Runs pbs-backup.service every night at 03:30 (and after boot if a run was missed).
+[Unit]
+Description=Nightly PBS database backup
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

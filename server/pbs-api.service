@@ -2,6 +2,7 @@
 # Install on the server:
 #   mkdir -p ~/.config/systemd/user && cp server/pbs-api.service ~/.config/systemd/user/
 #   systemctl --user daemon-reload && systemctl --user enable --now pbs-api
+# UMask 0077: the database and backups are readable only by this user.
 # Linger (set by the admin) keeps it running after logout and starts it on boot.
 [Unit]
 Description=PBS demo API
@@ -13,6 +14,8 @@ Environment=HOST=127.0.0.1
 Environment=DB_PATH=%h/pbs/server/data/pbs.sqlite
 Environment=ALLOWED_ORIGINS=https://overbivskyi.github.io
 ExecStart=/usr/bin/env node server/index.js
+UMask=0077
+NoNewPrivileges=yes
 Restart=on-failure
 RestartSec=3
 

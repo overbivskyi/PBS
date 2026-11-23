@@ -1,0 +1,10 @@
+# Nightly database backup (see server/backup.js). Installed together with pbs-backup.timer.
+[Unit]
+Description=PBS database backup
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/pbs
+Environment=DB_PATH=%h/pbs/server/data/pbs.sqlite
+UMask=0077
+ExecStart=/usr/bin/env node server/backup.js
