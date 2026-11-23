@@ -45,8 +45,35 @@ export class StoreError extends Error {
 
 // ---------- server calls ----------
 
+// Server mode: the browser keeps only the session token. Who the user is and which role they have
+// always comes from the server (GET /api/auth/me), so editing browser storage cannot change it.
+// The server checks the role again on every request anyway.
+let serverUser = null
+let sessionLoaded = false
+const token = () => read('apiSession', null)?.token ?? null
+const saveSession = (t, user) => {
+  serverUser = user
+  write('apiSession', t ? { token: t } : null)
+}
+
+// Called once when the site starts. Resolves when we know who is logged in.
+export async function loadSession() {
+  if (!API || sessionLoaded) return
+  if (token()) {
+    try {
+      serverUser = (await call('GET', '/api/auth/me')).user ?? null
+      saveSession(serverUser ? token() : null, serverUser) // also drops the user copy older versions kept
+    } catch {
+      serverUser = null // server not reachable: act as logged out, keep the token for the next visit
+    }
+  }
+  sessionLoaded = true
+  window.dispatchEvent(new Event('pbs-store'))
+}
+export const needsSessionLoad = () => !!API && !sessionLoaded && !!token()
+
 async function call(method, path, body) {
-  const session = read('apiSession', null)
+  const session = token() ? { token: token() } : null
   let res
   try {
     res = await fetch(API + path, {
@@ -63,7 +90,7 @@ async function call(method, path, body) {
   }
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
-    if (res.status === 401 && session) write('apiSession', null) // expired session
+    if (res.status === 401 && session) saveSession(null, null) // expired session
     const { code, message, ...extra } = data
     throw new StoreError(code ?? 'server_error', message ?? 'Server error', extra)
   }
@@ -256,15 +283,15 @@ async function hash(text) {
 }
 
 export function currentUser() {
-  if (API) return read('apiSession', null)?.user ?? null
+  if (API) return serverUser
   const session = read('session', null)
   return session ? read('users', []).find((u) => u.id === session.userId) ?? null : null
 }
 
 export async function signUp({ role, firstName, lastName, email, phone, password }) {
   if (API) {
-    const { token, user } = await call('POST', '/api/auth/signup', { role, firstName, lastName, email, phone, password })
-    write('apiSession', { token, user })
+    const { token: t, user } = await call('POST', '/api/auth/signup', { role, firstName, lastName, email, phone, password })
+    saveSession(t, user)
     return user
   }
   const users = read('users', [])
@@ -290,8 +317,8 @@ export async function signUp({ role, firstName, lastName, email, phone, password
 
 export async function logIn({ email, password }) {
   if (API) {
-    const { token, user } = await call('POST', '/api/auth/login', { email, password })
-    write('apiSession', { token, user })
+    const { token: t, user } = await call('POST', '/api/auth/login', { email, password })
+    saveSession(t, user)
     return user
   }
   const users = read('users', [])
@@ -305,7 +332,7 @@ export async function logIn({ email, password }) {
 export function logOut() {
   if (API) {
     call('POST', '/api/auth/logout').catch(() => {})
-    write('apiSession', null)
+    saveSession(null, null)
     return
   }
   write('session', null)

@@ -11,12 +11,18 @@ import TextPage from './pages/TextPage.jsx'
 import Bookings from './pages/photographer/Bookings.jsx'
 import Rules from './pages/photographer/Rules.jsx'
 import ProfileSettings from './pages/photographer/ProfileSettings.jsx'
-import { Empty } from './components/ui.jsx'
+import { Empty, Loading } from './components/ui.jsx'
+import { loadSession, needsSessionLoad } from './lib/store.js'
 import { t, getLang } from './lib/i18n.js'
 
 // HashRouter: GitHub Pages serves static files only, so routes live after the #.
 export default function App() {
   const [lang, setLangState] = useState(getLang())
+  // server mode: ask the server who is logged in before showing pages that depend on it
+  const [sessionReady, setSessionReady] = useState(!needsSessionLoad())
+  useEffect(() => {
+    loadSession().then(() => setSessionReady(true))
+  }, [])
   useEffect(() => {
     document.title = `Snaply · ${t('Book a photographer')}`
     const on = () => {
@@ -26,6 +32,7 @@ export default function App() {
     window.addEventListener('pbs-lang', on)
     return () => window.removeEventListener('pbs-lang', on)
   }, [])
+  if (!sessionReady) return <Loading />
   return (
     <HashRouter>
       <Routes key={lang}>

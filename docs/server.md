@@ -99,6 +99,10 @@ npm run server:testers -- delete    # delete all testers' accounts, photographer
 - **Accounts:** passwords are hashed with scrypt; session tokens are stored only as SHA-256 hashes and expire after 14 days.
 - **Access:** only the site's own address may call the API (CORS + Origin check); client details are visible only
   to that client, the photographer and the team.
+- **Roles come only from the server:** the browser keeps just the session token; the user and their role are loaded
+  from `GET /api/auth/me` on every start. Editing browser storage changes nothing, and every API call checks the role
+  from the database again. Any future admin panel must check `role === 'team'` on the server for each endpoint,
+  like `requireEditor` in `server/index.js` — hiding buttons in the site is not protection.
 - **Site:** Content Security Policy (only our scripts, only our API), no embedding in other pages.
 - **Data:** database and backups are readable only by `mykola`; a nightly backup at 03:30 keeps the last 14 days
   in `server/data/backups/` (`systemctl --user list-timers`).
