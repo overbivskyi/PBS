@@ -90,6 +90,22 @@ npm run server:team -- email password [First] [Last]
 npm run server:testers -- delete    # delete all testers' accounts, photographers and bookings
 ```
 
+## Security
+
+- **Input:** every field is checked for type, length and allowed values (`server/security.js`); images may only be
+  our own JPEG/PNG uploads or the design's Unsplash photos.
+- **Limits:** 300 requests a minute per address; 8 wrong passwords lock an account for 15 minutes; 10 sign-ups an hour
+  per address; 20 bookings an hour per user.
+- **Accounts:** passwords are hashed with scrypt; session tokens are stored only as SHA-256 hashes and expire after 14 days.
+- **Access:** only the site's own address may call the API (CORS + Origin check); client details are visible only
+  to that client, the photographer and the team.
+- **Site:** Content Security Policy (only our scripts, only our API), no embedding in other pages.
+- **Data:** database and backups are readable only by `mykola`; a nightly backup at 03:30 keeps the last 14 days
+  in `server/data/backups/` (`systemctl --user list-timers`).
+
+Restore a backup: `systemctl --user stop pbs-api`, copy the backup over `server/data/pbs.sqlite`
+(delete the `-wal` and `-shm` files), `systemctl --user start pbs-api`.
+
 ## Notes
 
 - Who can do what: anyone can search and see profiles; booking needs an account; a photographer edits
